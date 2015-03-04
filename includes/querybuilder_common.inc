@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Common function define.
+ */
 
 /**
  * Implements function for fetching list of table name from database.
@@ -10,7 +14,7 @@ function querybuilder_get_tables() {
 	global $databases;
   $db_name = $databases['default']['default']['database'];
   // Fetch list of table name.
-  $tables_list = db_query("SHOW tables FROM " . $db_name, array())->fetchAllKeyed(0,0);  
+  $tables_list = db_query("SHOW tables FROM {" . check_plain($db_name) . "}", array())->fetchAllKeyed(0,0);  
   $tables_list['_none'] = "Select table";
 	return $tables_list;
 }
@@ -26,7 +30,7 @@ function querybuilder_get_tables() {
  */
 function _querybuilder_get_fields($tables) {
 	if (!is_array($tables) && !empty($tables) && ($tables != '_none')) {
-		$result = db_query("SHOW COLUMNS FROM " . $tables, array())->fetchAll();
+		$result = db_query("SHOW COLUMNS FROM {" . check_plain($tables) . "}", array())->fetchAll();
 		foreach ($result as $record) {
 			$field_list[$record->Type] = $record->Field;
 		}
@@ -35,9 +39,9 @@ function _querybuilder_get_fields($tables) {
   else {
 		if (($tables != '_none') && (is_array($tables))) { 
 			if (!array_key_exists('_none', $tables)) {
-				foreach ($tables as $key => $value) { 
+				foreach ($tables as $value) { 
 				// Fetch list of column names from table(s).
-					$result = db_query("SHOW COLUMNS FROM " . $value, array())->fetchAll();
+					$result = db_query("SHOW COLUMNS FROM {" . check_plain($value) . "}", array())->fetchAll();
 					foreach ($result as $record) {
 						$field_list[$value . '.' . $record->Type] = $value . '.' .$record->Field;
 					}
@@ -61,7 +65,7 @@ function _querybuilder_get_fields($tables) {
  * @return boolean 
  *   Returns TRUE/FALSE.
  */
-function validate_value($data_type, $length, $field_value) {
+function querybuilder_validate_value($data_type, $length, $field_value) {
   if (empty($field_value)) {
 		return FALSE;
 	}
@@ -70,7 +74,8 @@ function validate_value($data_type, $length, $field_value) {
     case 'varchar':
       $len = strlen($field_value);
       if ($len > $length) {
-        drupal_set_message("Length of text exceeded.", 'warning');
+        $message = t("Length of text exceeded.");
+        drupal_set_message($message, 'warning');
       }
       $result = TRUE;
       break;
@@ -78,7 +83,8 @@ function validate_value($data_type, $length, $field_value) {
       $len = strlen($field_value);
 			$length = 500;
       if ($len > $length) {
-        drupal_set_message("Length of text exceeded.", 'warning');
+        $message = t("Length of text exceeded.");
+        drupal_set_message($message, 'warning');
       }
       $result = TRUE;
     break;
@@ -127,7 +133,7 @@ function validate_value($data_type, $length, $field_value) {
  * @return string $sign 
  *   Returns operator symbol.
  */
-function actual_operator($operator) {
+function querybuilder_actual_operator($operator) {
 	switch ($operator) {
 		case 'eq':
 			$sign = '=';

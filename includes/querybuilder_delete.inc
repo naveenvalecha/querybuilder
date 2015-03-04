@@ -2,8 +2,6 @@
 
 /**
  * @file
- * querybuilder_delete.inc
- *
  * Demonstrates for dynamic delete query.
  */
 
@@ -97,7 +95,7 @@ function querybuilder_delete($form, &$form_state) {
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 					else {
@@ -105,7 +103,7 @@ function querybuilder_delete($form, &$form_state) {
 						if (strpos($key,'int') !== false || strpos($key,'float') !== false || strpos($key,'decimal') !== false) {
 							$options = $options_num;
 							$description = $key;
-							$description .= "<br>" . "For 'between' operator value can seperate by '|'";
+							$description .= "<br>" . t("For 'between' operator value can seperate by '|'");
 						}
 						else {
 							$options = $options_char;
@@ -116,7 +114,7 @@ function querybuilder_delete($form, &$form_state) {
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => 'Field Type ' . $description,
+							'#description' => t('Field Type ') . $description,
 						);
 
 						$form['placeholder'][$value . "_operator"] = array(
@@ -190,7 +188,7 @@ function querybuilder_delete_result($form, $form_state) {
 				$chk_multi_val = explode('|', $field_value);
 				foreach ($chk_multi_val as $kkey => $val) {
 					// Validate user-input.
-					$validate_result = validate_value($data_type, $length, $val);
+					$validate_result = querybuilder_validate_value($data_type, $length, $val);
           if (!$validate_result) {
 						break;
 					}
@@ -199,7 +197,7 @@ function querybuilder_delete_result($form, $form_state) {
 			if (isset($form_state['values']['placeholder'][$key . "_operator"]) && !empty($form_state['values']['placeholder'][$key . "_operator"])) {
 				$field_value_operator = $form_state['values']['placeholder'][$key . "_operator"];			
 				// Get operator.
-				$act_oper = actual_operator($field_value_operator);
+				$act_oper = querybuilder_actual_operator($field_value_operator);
 				if ($validate_result) {
 					$map_fields_data[$key] = $field_value;
 					$map_fields_operator[$key] = $act_oper;

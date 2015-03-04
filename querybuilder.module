@@ -12,7 +12,7 @@ function querybuilder_help($path, $arg) {
   switch ($path) {
     case 'admin/help#querybuilder':
       $output  = '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('querybuilder is a module which build the dynamic query for developer especially which are new in drupal. This module helps the drupal developer for building dyamic query by follow drupal syntax. This will reduce the amount of time at the time of building query.') . '</p>';
+      $output .= '<p>' . t('QueryBuilder is a module which build the dynamic query for developer especially which are new in drupal. This module helps the drupal developer for building dyamic query by follow drupal syntax. This will reduce the amount of time at the time of building query.') . '</p>';
       return $output;
   }
 }
@@ -29,7 +29,7 @@ function querybuilder_menu() {
     'position' => 'right',
     'weight' => 0,
     'page callback' => 'system_admin_menu_block_page',
-    'access arguments' => array('access administration pages'),
+    'access arguments' => array('administer site configuration'),
     'file path' => drupal_get_path('module', 'system'),
     'file' => 'system.admin.inc',
   );
@@ -40,7 +40,7 @@ function querybuilder_menu() {
     'description' => 'Dynamic query for dynamic.',
     'weight' => 0,
     'page callback' => 'system_admin_menu_block_page',
-    'access arguments' => array('access administration pages'),
+    'access arguments' => array('administer site configuration'),
     'file path' => drupal_get_path('module', 'system'),
     'file' => 'system.admin.inc',
   );
@@ -141,9 +141,9 @@ function querybuilder_menu() {
 function querybuilder_permission() {
   // Set permission for query builder.
   return array(
-    'access administration pages' => array(
-      'title' => t('Access administration pages'),
-      'description' => t('Access administration pages.'),
+    'administer site configuration' => array(
+      'title' => t('Administer site configuration'),
+      'description' => t('Administer site configuration.'),
       'restrict access' => TRUE,
     ),
 	'access insert query page' => array(

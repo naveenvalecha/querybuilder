@@ -2,8 +2,6 @@
 
 /**
  * @file
- * querybuilder_select.inc
- *
  * Demonstrates for dynamic select query.
  */
 
@@ -148,14 +146,14 @@ function querybuilder_select($form, &$form_state) {
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 					else {
 						if (strpos($key,'int') !== false || strpos($key,'float') !== false || strpos($key,'decimal') !== false) {
 							$options = $options_num;
 							$description = $key;
-							$description .= "<br>" . "For 'between' operator value can seperate by '|'";
+							$description .= "<br>" . t("For 'between' operator value can separate by '|'");
 						}
 						else {
 							$options = $options_char;
@@ -165,7 +163,7 @@ function querybuilder_select($form, &$form_state) {
 					  $form['placeholder_cond'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => 'Field Type ' . $description,
+							'#description' => t('Field Type ') . $description,
 						);
 
 						$form['placeholder_cond'][$value . "_operator"] = array(
@@ -294,14 +292,14 @@ function querybuilder_select_result($form, $form_state) {
 					$cond_field_value = check_plain($form_state['values']['placeholder_cond'][$key]);
 					$cond_field_value_operator = $form_state['values']['placeholder_cond'][$key . "_operator"];
 				  // Get operator.
-					$cond_act_oper = actual_operator($cond_field_value_operator);
+					$cond_act_oper = querybuilder_actual_operator($cond_field_value_operator);
 					// For multi values.
 					$chk_multi_val = array();
 					$chk_multi_val = explode('|', $cond_field_value);
 					$validate_result = FALSE;
 					foreach ($chk_multi_val as $kkey => $val) {
 						// Validate user-input for condition fields.
-						$validate_result = validate_value($data_type, $length, $val); 
+						$validate_result = querybuilder_validate_value($data_type, $length, $val); 
 						if (!$validate_result) {
 							break;
 						}

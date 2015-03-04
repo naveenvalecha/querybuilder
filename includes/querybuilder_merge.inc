@@ -1,8 +1,6 @@
 <?php
 /**
  * @file
- * querybuilder_merge.inc
- *
  * Demonstrates for dynamic merge query.
  */
 
@@ -80,7 +78,7 @@ function querybuilder_merge($form, &$form_state) {
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 					else {
@@ -88,7 +86,7 @@ function querybuilder_merge($form, &$form_state) {
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 				}
@@ -129,7 +127,7 @@ function querybuilder_merge($form, &$form_state) {
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 					else {
@@ -137,7 +135,7 @@ function querybuilder_merge($form, &$form_state) {
 						 $form['placeholder_update'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 				}
@@ -178,7 +176,7 @@ function querybuilder_merge($form, &$form_state) {
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 					else {
@@ -186,7 +184,7 @@ function querybuilder_merge($form, &$form_state) {
 						 $form['placeholder_cond'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 
 					}
@@ -252,7 +250,7 @@ function querybuilder_merge_result($form, $form_state) {
 				$field_value = check_plain($form_state['values']['placeholder'][$key]);
 				$validate_result = FALSE;
 				// Validate user-input.
-				$validate_result = validate_value($data_type, $length, $field_value); 
+				$validate_result = querybuilder_validate_value($data_type, $length, $field_value); 
 				if ($validate_result) {
 					$map_insert_fields[$key] = $field_value;
 				}
@@ -272,7 +270,7 @@ function querybuilder_merge_result($form, $form_state) {
 				$field_up_value = check_plain($form_state['values']['placeholder_update'][$key]);
 				$validate_result = FALSE;
 				// Validate user-input for condition fields.
-				$validate_result = validate_value($data_type, $length, $field_up_value); 
+				$validate_result = querybuilder_validate_value($data_type, $length, $field_up_value); 
 				if ($validate_result) {
 					$map_update_fields[$key] = $field_up_value;
 				} 
@@ -292,7 +290,7 @@ function querybuilder_merge_result($form, $form_state) {
 				$field_key_value = check_plain($form_state['values']['placeholder_cond'][$key]);
 				$validate_result = FALSE;
 				// Validate user-input for key fields.
-				$validate_result = validate_value($data_type, $length, $field_key_value); 
+				$validate_result = querybuilder_validate_value($data_type, $length, $field_key_value); 
 				if ($validate_result) {
 					$map_key_fields[$key] = $field_key_value;
 				} 

@@ -2,8 +2,6 @@
 
 /**
  * @file
- * querybuilder_drop.inc
- *
  * Demonstrates for drop query.
  */
 

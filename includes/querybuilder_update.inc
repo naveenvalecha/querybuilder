@@ -2,8 +2,6 @@
 
 /**
  * @file
- * querybuilder_update.inc
- *
  * Demonstrates for dynamic update query.
  */
 
@@ -101,7 +99,7 @@ function querybuilder_update($form, &$form_state) {
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 					else {
@@ -109,7 +107,7 @@ function querybuilder_update($form, &$form_state) {
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 				}
@@ -149,14 +147,14 @@ function querybuilder_update($form, &$form_state) {
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 					else {
 						if (strpos($key,'int') !== false || strpos($key,'float') !== false || strpos($key,'decimal') !== false) {
 							$options = $options_num;
 							$description = $key;
-							$description .= "<br>" . "For 'between' operator value can seperate by '|'";
+							$description .= "<br>" . t("For 'between' operator value can separate by '|'");
 						}
 						else {
 							$options = $options_char;
@@ -166,7 +164,7 @@ function querybuilder_update($form, &$form_state) {
 						$form['placeholder_cond'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => 'Field Type ' . $description,
+							'#description' => t('Field Type ') . $description,
 						);
 						$form['placeholder_cond'][$value . "_operator"] = array(
 							'#type' => 'select', 
@@ -234,7 +232,7 @@ function querybuilder_update_result($form, $form_state) {
 				$field_value = check_plain($form_state['values']['placeholder'][$key]);
 				$validate_result = FALSE;
 				// Validate user-input.
-				$validate_result = validate_value($data_type, $length, $field_value); 
+				$validate_result = querybuilder_validate_value($data_type, $length, $field_value); 
 				if ($validate_result) {
 					$map_fields_data[$key] = $field_value;
 				}	 
@@ -258,7 +256,7 @@ function querybuilder_update_result($form, $form_state) {
 					$chk_multi_val = explode('|', $cond_field_value);
 					foreach ($chk_multi_val as $kkey => $val) { 
 						// Validate user-input for condition fields.
-						$validate_result = validate_value($data_type, $length, $val);
+						$validate_result = querybuilder_validate_value($data_type, $length, $val);
             if (!$validate_result) {
 							break;
 						}						
@@ -267,7 +265,7 @@ function querybuilder_update_result($form, $form_state) {
 				if (isset($form_state['values']['placeholder_cond'][$key . "_operator"]) && !empty($form_state['values']['placeholder_cond'][$key . "_operator"])) {
 					$cond_field_value_operator = $form_state['values']['placeholder_cond'][$key . "_operator"];
 					// Get operator.
-					$cond_act_oper = actual_operator($cond_field_value_operator);
+					$cond_act_oper = querybuilder_actual_operator($cond_field_value_operator);
 					if ($validate_result && !empty($cond_field_value)) {
 						$cond_map_fields_data[$key] = $cond_field_value;
 						$cond_map_fields_operator[$key] = $cond_act_oper;

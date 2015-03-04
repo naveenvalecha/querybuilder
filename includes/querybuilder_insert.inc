@@ -2,8 +2,6 @@
 
 /**
  * @file
- * querybuilder_insert.inc
- *
  * Demonstrates for dynamic insert query.
  */
 
@@ -77,7 +75,7 @@ function querybuilder_insert($form, &$form_state) {
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 					else {
@@ -85,7 +83,7 @@ function querybuilder_insert($form, &$form_state) {
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => 'Field Type ' . $key,
+							'#description' => t('Field Type ') . $key,
 						);
 					}
 				}
@@ -149,7 +147,7 @@ function querybuilder_insert_result($form, $form_state) {
 				$field_value = check_plain($form_state['values']['placeholder'][$key]);
 				$validate_result = FALSE;
 				// Validate user-input.
-				$validate_result = validate_value($data_type, $length, $field_value); 
+				$validate_result = querybuilder_validate_value($data_type, $length, $field_value); 
 				if ($validate_result) {
 					$map_fields_data[$key] = $field_value;
 				}
