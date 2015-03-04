@@ -186,7 +186,7 @@ function querybuilder_delete_result($form, $form_state) {
 				$field_value = check_plain($form_state['values']['placeholder'][$key]);
 				$chk_multi_val = array();
 				$chk_multi_val = explode('|', $field_value);
-				foreach ($chk_multi_val as $kkey => $val) {
+				foreach ($chk_multi_val as $val) {
 					// Validate user-input.
 					$validate_result = querybuilder_validate_value($data_type, $length, $val);
           if (!$validate_result) {

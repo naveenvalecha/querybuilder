@@ -45,7 +45,6 @@ function querybuilder_select($form, &$form_state) {
 
 	// Get value from $form_state['values']
   $sel_qry_table = isset($form_state['values']['query_table']) ? $form_state['values']['query_table'] : '_none';
-  $sel_qry_fields = isset($form_state['values']['query_fields']) ? $form_state['values']['query_fields'] : '_none';
   $sel_cond_fields = isset($form_state['values']['condition_fields']) ? $form_state['values']['condition_fields'] : '_none';
  
   if ($sel_qry_table != '_none') {
@@ -261,7 +260,7 @@ function querybuilder_select_result($form, $form_state) {
 			foreach ($field_array as $key => $value) {
 				$fld_array = 'array(';
 				$first = 0;
-				foreach ($value as $in_key => $in_val) {
+				foreach ($value as $in_val) {
 				 if ($first < 1) {
 						$fld_array .= '\'' . $in_val . '\'';
 					}
@@ -297,7 +296,7 @@ function querybuilder_select_result($form, $form_state) {
 					$chk_multi_val = array();
 					$chk_multi_val = explode('|', $cond_field_value);
 					$validate_result = FALSE;
-					foreach ($chk_multi_val as $kkey => $val) {
+					foreach ($chk_multi_val as $val) {
 						// Validate user-input for condition fields.
 						$validate_result = querybuilder_validate_value($data_type, $length, $val); 
 						if (!$validate_result) {
