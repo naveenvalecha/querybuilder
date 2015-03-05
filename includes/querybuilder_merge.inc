@@ -26,7 +26,6 @@ function querybuilder_merge($form, &$form_state) {
 		$query_fields_list = array_combine($query_fields, $query_fields);
   }  
 	$query_fields_list['_none'] = "Select Fields";
-  
   $form['query_table'] = array(
     '#type' => 'select', 
     '#title' => 'Select Table',
@@ -102,7 +101,6 @@ function querybuilder_merge($form, &$form_state) {
       'wrapper' => 'placeholder-update-fields',
       )
   );
-
 	$form['placeholder_update'] = array(
     '#type' => 'hidden',
     '#prefix' => '<div id="placeholder-update-fields">',
@@ -139,7 +137,6 @@ function querybuilder_merge($form, &$form_state) {
 			$form_state['update_fields'] = $map_update_fields;
 		}
   }
-
   $form['query_fields_key'] = array(
     '#type' => 'select', 
     '#title' => 'Key Fields',
@@ -153,14 +150,12 @@ function querybuilder_merge($form, &$form_state) {
       'wrapper' => 'placeholder-fields-condition',
       )
   );
-
   $form['placeholder_cond'] = array(
     '#type' => 'hidden',
     '#prefix' => '<div id="placeholder-fields-condition">',
     '#suffix' => '</div>',
     '#tree' => TRUE,
   );
-  
 	$map_cond_fields = array();
   if (!empty($sel_key_fields) && isset($form_state['values']['query_fields_key'])) {
     if (!array_key_exists('_none', $sel_key_fields)) {
@@ -191,7 +186,6 @@ function querybuilder_merge($form, &$form_state) {
 			$form_state['key_fields'] = $map_cond_fields;
 		}
 	}
-
   $form['build_query'] = array(
    '#type' => 'checkbox',
    '#title' => t('Build Query'),
@@ -201,14 +195,12 @@ function querybuilder_merge($form, &$form_state) {
       'effect' => 'fade',
     ),
   );
-
   $form['fieldsets'] = array(
     '#title' => t("Output"),
     '#prefix' => '<div id="textfields">',
     '#suffix' => '</div>',
     '#type' => 'fieldset',
   );
-
   if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {  
 		$form['fieldsets']['query_outputs'] = array(
 			'#title' => 'Query and Its output',

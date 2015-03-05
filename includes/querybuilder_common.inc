@@ -13,7 +13,8 @@
 function querybuilder_get_tables() {
   // Fetch list of table name.
   $schema = drupal_get_schema(NULL,TRUE); 
-  ksort($schema);// Sort Ascending
+  // Sort ascending.
+  ksort($schema);
   foreach($schema as $table => $value){
     $tables_list[$table] = $table;
   }  

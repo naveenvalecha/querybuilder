@@ -39,14 +39,12 @@ function querybuilder_update($form, &$form_state) {
   $sel_qry_table = isset($form_state['values']['query_table']) ? $form_state['values']['query_table'] : '_none';
   $sel_qry_fields = isset($form_state['values']['query_fields']) ? $form_state['values']['query_fields'] : '_none';
   $sel_cond_fields = isset($form_state['values']['condition_fields']) ? $form_state['values']['condition_fields'] : '_none';
- 
   if (!empty($sel_qry_table) && $sel_qry_table != '_none') {
 		// Get list of field name from table.
 		$query_fields = _querybuilder_get_fields($sel_qry_table);
 		$query_fields_list = array_combine($query_fields, $query_fields);
   }  
 	$query_fields_list['_none'] = "Select Fields";
-	
   $form['query_table'] = array(
     '#type' => 'select', 
     '#title' => 'Select Table',
@@ -78,7 +76,6 @@ function querybuilder_update($form, &$form_state) {
     '#suffix' => '</div>',
     '#tree' => TRUE,
   );
-	
   $map_fields = array();
   if (!empty($sel_qry_fields) && isset($form_state['values']['query_fields'])) {
     if (!array_key_exists('_none', $sel_qry_fields)) {
@@ -108,7 +105,6 @@ function querybuilder_update($form, &$form_state) {
 			$form_state['fields'] = $map_fields;
 		}
   }
-
 	$form['condition_fields'] = array(
     '#type' => 'select', 
     '#title' => 'Condition Fields',
@@ -127,7 +123,6 @@ function querybuilder_update($form, &$form_state) {
     '#suffix' => '</div>',
     '#tree' => TRUE,
   );
-  
 	$map_cond_fields = array();
   if (!empty($sel_cond_fields) && isset($form_state['values']['condition_fields'])) {  
     if (!array_key_exists('_none', $sel_cond_fields)) {
@@ -186,7 +181,6 @@ function querybuilder_update($form, &$form_state) {
     '#suffix' => '</div>',
     '#type' => 'fieldset',
   );
-
   if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {
 		$form['fieldsets']['query_outputs'] = array(
 			'#title' => 'Query and Its output',

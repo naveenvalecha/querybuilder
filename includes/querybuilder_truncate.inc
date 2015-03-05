@@ -14,7 +14,6 @@ module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
 function querybuilder_truncate($form, &$form_state) {
   // Get list of tables name from database.
 	$tbl_list = querybuilder_get_tables();
-	
 	$form['query_table'] = array(
     '#type' => 'select', 
     '#title' => 'Select Table',

@@ -13,7 +13,7 @@ module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
  */
 function querybuilder_drop($form, &$form_state) {
   // Get list of tables name from database.
-	$tbl_list = querybuilder_get_tables();
+  $tbl_list = querybuilder_get_tables();
 	$form['query_table'] = array(
     '#type' => 'select', 
     '#title' => 'Select Table',
@@ -35,7 +35,6 @@ function querybuilder_drop($form, &$form_state) {
    '#suffix' => '</div>',
    '#type' => 'fieldset',
   );
-
 	if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {    
 		$form['fieldsets']['query_outputs'] = array(
 			'#title' => 'Query and Its output',

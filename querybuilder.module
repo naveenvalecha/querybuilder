@@ -146,42 +146,42 @@ function querybuilder_permission() {
       'description' => t('Administer site configuration.'),
       'restrict access' => TRUE,
     ),
-	'access insert query page' => array(
+	  'access insert query page' => array(
       'title' => t('Access insert query page'),
       'description' => t('Access insert query page for building dynamic query.'),
       'restrict access' => TRUE,
     ),
-	'access upadate query page' => array(
+	  'access upadate query page' => array(
       'title' => t('Access upadate query page'),
       'description' => t('Access update query page for building dynamic query.'),
       'restrict access' => TRUE,
     ),
-	'access merge query page' => array(
+	  'access merge query page' => array(
       'title' => t('Access merge query page'),
       'description' => t('Access insert/update query page for building dynamic query.'),
       'restrict access' => TRUE,
     ),
-	'access delete query page' => array(
+	  'access delete query page' => array(
       'title' => t('Access delete query page'),
       'description' => t('Access delete query page.'),
       'restrict access' => TRUE,
     ),
-  'access truncate query page' => array(
+    'access truncate query page' => array(
       'title' => t('Access truncate query page'),
       'description' => t('Access truncate query page.'),
       'restrict access' => TRUE,
     ),
-	'access select query page' => array(
+	  'access select query page' => array(
       'title' => t('Access select query page'),
       'description' => t('Access select query page for building dynamic query.'),
       'restrict access' => TRUE,
     ),
-  'access drop query page' => array(
+    'access drop query page' => array(
       'title' => t('Access drop query page'),
       'description' => t('Access drop query page.'),
       'restrict access' => TRUE,
     ),
-  'access optimise database page' => array(
+    'access optimise database page' => array(
       'title' => t('Access optimise database page'),
       'description' => t('Access optimise database page.'),
       'restrict access' => TRUE,
