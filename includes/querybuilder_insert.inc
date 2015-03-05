@@ -69,21 +69,23 @@ function querybuilder_insert($form, &$form_state) {
     if (!array_key_exists('_none', $sel_qry_fields)) {
 			$form['placeholder']['#type'] = 'fieldset';
 			foreach ($query_fields as $key => $value) {
+				$fetch_key = array();
+				$fetch_key = explode('%', $key);
 				if (in_array($value, $sel_qry_fields)) {
-					if ($key == "blob") {
+					if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 					}
 					else {
-						 $map_fields[$value] = $key;
+						 $map_fields[$value] = $fetch_key[1];
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 					}
 				}
@@ -132,22 +134,15 @@ function querybuilder_insert($form, &$form_state) {
  */
 function querybuilder_insert_result($form, $form_state) {
   $query_table = $form_state['values']['query_table'];
-  $map_fields_data = array();
-	$find= array('(', ')');  
+  $map_fields_data = array(); 
   if (isset($form_state['fields']) && !empty($form_state['fields'])) {
 		$query_fields = $form_state['fields'];
 		foreach ($query_fields as $key => $value) {
-			// Find data type and its length.
-			$tmp_array = array();
-			$temp_str = str_replace($find, ' ', $value);
-			$tmp_array = explode(' ', $temp_str);
-			$data_type = $tmp_array[0];
-			$length = $tmp_array[1];
 			if (isset($form_state['values']['placeholder'][$key]) && !empty($form_state['values']['placeholder'][$key])) {
 				$field_value = check_plain($form_state['values']['placeholder'][$key]);
 				$validate_result = FALSE;
 				// Validate user-input.
-				$validate_result = querybuilder_validate_value($data_type, $length, $field_value); 
+				$validate_result = querybuilder_validate_value($value, $field_value); 
 				if ($validate_result) {
 					$map_fields_data[$key] = $field_value;
 				}

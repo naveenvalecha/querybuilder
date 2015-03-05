@@ -89,28 +89,30 @@ function querybuilder_delete($form, &$form_state) {
     if (!array_key_exists('_none', $sel_qry_fields)) {
 			$form['placeholder']['#type'] = 'fieldset';
 			foreach ($query_fields as $key => $value) {
+				$fetch_key = array();
+				$fetch_key = explode('%', $key);
 				if (in_array($value, $sel_qry_fields)) {
-					if ($key == "blob" || $key == "longblob" || $key == "mediumblob") {
+					if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 					}
 					else {
 
-						if (strpos($key,'int') !== false || strpos($key,'float') !== false || strpos($key,'decimal') !== false) {
+						if (strpos($fetch_key[1],'int') !== false || strpos($fetch_key[1],'float') !== false || strpos($fetch_key[1],'decimal') !== false) {
 							$options = $options_num;
-							$description = $key;
+							$description = $fetch_key[1];
 							$description .= "<br>" . t("For 'between' operator value can seperate by '|'");
 						}
 						else {
 							$options = $options_char;
-							$description = $key;
+							$description = $fetch_key[1];
 						}
 
-						 $map_fields[$value] = $key;
+						 $map_fields[$value] = $fetch_key[1];
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
@@ -171,16 +173,9 @@ function querybuilder_delete($form, &$form_state) {
 function querybuilder_delete_result($form, $form_state) {
   $query_table = $form_state['values']['query_table'];
   $act_query = NULL;
-	$find= array('(', ')');
 	if (isset($form_state['fields']) && !empty($form_state['fields'])) {
 		$query_fields = $form_state['fields'];
 		foreach ($query_fields as $key => $value) {
-			// Find data type and its length.
-			$tmp_array = array();
-			$temp_str = str_replace($find, ' ', $value);
-			$tmp_array = explode(' ', $temp_str);
-			$data_type = $tmp_array[0];
-			$length = $tmp_array[1];
 			$validate_result = FALSE;
 			if (isset($form_state['values']['placeholder'][$key]) && !empty($form_state['values']['placeholder'][$key])) {
 				$field_value = check_plain($form_state['values']['placeholder'][$key]);
@@ -188,7 +183,7 @@ function querybuilder_delete_result($form, $form_state) {
 				$chk_multi_val = explode('|', $field_value);
 				foreach ($chk_multi_val as $val) {
 					// Validate user-input.
-					$validate_result = querybuilder_validate_value($data_type, $length, $val);
+					$validate_result = querybuilder_validate_value($value, $val);
           if (!$validate_result) {
 						break;
 					}

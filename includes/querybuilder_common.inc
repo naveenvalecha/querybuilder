@@ -11,10 +11,12 @@
  *   Returns array of all tables name.
  */
 function querybuilder_get_tables() {
-	global $databases;
-  $db_name = $databases['default']['default']['database'];
   // Fetch list of table name.
-  $tables_list = db_query("SHOW tables FROM {" . check_plain($db_name) . "}", array())->fetchAllKeyed(0,0);  
+  $schema = drupal_get_schema(NULL,TRUE); 
+  ksort($schema);// Sort Ascending
+  foreach($schema as $table => $value){
+    $tables_list[$table] = $table;
+  }  
   $tables_list['_none'] = "Select table";
 	return $tables_list;
 }
@@ -29,22 +31,24 @@ function querybuilder_get_tables() {
  *   Returns array of all fields name.
  */
 function _querybuilder_get_fields($tables) {
-	if (!is_array($tables) && !empty($tables) && ($tables != '_none')) {
-		$result = db_query("SHOW COLUMNS FROM {" . check_plain($tables) . "}", array())->fetchAll();
-		foreach ($result as $record) {
-			$field_list[$record->Type] = $record->Field;
-		}
+	// Fetch list of column names from table(s).
+  if (!is_array($tables) && !empty($tables) && ($tables != '_none')) {
+		$schema = drupal_get_schema($tables, TRUE); 
+    foreach ($schema['fields'] as $key => $value) {
+      $type = $value['type']; 
+      $field_list[$key . "%" . $type] = $key;
+    } 
 		return $field_list;
   }
   else {
 		if (($tables != '_none') && (is_array($tables))) { 
 			if (!array_key_exists('_none', $tables)) {
 				foreach ($tables as $value) { 
-				// Fetch list of column names from table(s).
-					$result = db_query("SHOW COLUMNS FROM {" . check_plain($value) . "}", array())->fetchAll();
-					foreach ($result as $record) {
-						$field_list[$value . '.' . $record->Type] = $value . '.' .$record->Field;
-					}
+					$schema = drupal_get_schema($value, TRUE); 
+          foreach ($schema['fields'] as $key => $val) {
+            $type = $val['type']; 
+            $field_list[$value . "." . $key . "%" . $type] = $value . "." . $key;
+          }
 				}
       }				
 			return $field_list;
@@ -65,27 +69,22 @@ function _querybuilder_get_fields($tables) {
  * @return boolean 
  *   Returns TRUE/FALSE.
  */
-function querybuilder_validate_value($data_type, $length, $field_value) {
+function querybuilder_validate_value($data_type, $field_value) {
   if (empty($field_value)) {
 		return FALSE;
 	}
 	$result = FALSE;
   switch ($data_type) {
     case 'varchar':
-      $len = strlen($field_value);
-      if ($len > $length) {
-        $message = t("Length of text exceeded.");
-        drupal_set_message($message, 'warning');
-      }
       $result = TRUE;
       break;
 		case 'longtext':
-      $len = strlen($field_value);
-			$length = 500;
-      if ($len > $length) {
-        $message = t("Length of text exceeded.");
-        drupal_set_message($message, 'warning');
-      }
+      $result = TRUE;
+    break;
+    case 'mediumtext':
+      $result = TRUE;
+    break;
+    case 'text':
       $result = TRUE;
     break;
     case 'int':
@@ -104,7 +103,7 @@ function querybuilder_validate_value($data_type, $length, $field_value) {
          $result = TRUE;
       }
       break;
-     case 'bigint':
+     case 'serial':
        if (!is_numeric($field_value)) {       
         $result = FALSE;
       }

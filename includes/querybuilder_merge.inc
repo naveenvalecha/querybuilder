@@ -72,21 +72,23 @@ function querybuilder_merge($form, &$form_state) {
     if (!array_key_exists('_none', $sel_qry_fields)) {
 			$form['placeholder']['#type'] = 'fieldset';  
 			foreach ($query_fields as $key => $value) {
+				$fetch_key = array();
+				$fetch_key = explode('%', $key);
 				if (in_array($value, $sel_qry_fields)) {
-					if ($key == "blob") {
+					if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 					}
 					else {
-						 $map_fields[$value] = $key;
+						 $map_fields[$value] = $fetch_key[1];
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 					}
 				}
@@ -121,21 +123,23 @@ function querybuilder_merge($form, &$form_state) {
     if (!array_key_exists('_none', $sel_upd_fields)) {
 			$form['placeholder_update']['#type'] = 'fieldset';
 			foreach ($query_fields as $key => $value) {
+				$fetch_key = array();
+				$fetch_key = explode('%', $key);
 				if (in_array($value, $sel_upd_fields)) {
-					if ($key == "blob") {
+					if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
 						 $form['placeholder_update'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 					}
 					else {
-						 $map_update_fields[$value] = $key;
+						 $map_update_fields[$value] = $fetch_key[1];
 						 $form['placeholder_update'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 					}
 				}
@@ -170,21 +174,23 @@ function querybuilder_merge($form, &$form_state) {
     if (!array_key_exists('_none', $sel_key_fields)) {
 			$form['placeholder_cond']['#type'] = 'fieldset';  
 			foreach ($query_fields as $key => $value) {
+				$fetch_key = array();
+				$fetch_key = explode('%', $key);
 				if (in_array($value, $sel_key_fields)) {
-					if ($key == "blob" || $key == "longblob" || $key == "mediumblob") {
+					if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
 						 $form['placeholder_cond'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 					}
 					else {
-						 $map_cond_fields[$value] = $key;
+						 $map_cond_fields[$value] = $fetch_key[1];
 						 $form['placeholder_cond'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 
 					}
@@ -235,22 +241,15 @@ function querybuilder_merge($form, &$form_state) {
 function querybuilder_merge_result($form, $form_state) {
 	$query_table = $form_state['values']['query_table'];  
   $act_query = NULL;
-	$map_insert_fields = $map_update_fields = $map_key_fields = NULL;	
-	$find = array('(', ')');  
+	$map_insert_fields = $map_update_fields = $map_key_fields = NULL;	 
   if (isset($form_state['fields']) && !empty($form_state['fields'])) {
 		$query_insert_fields = $form_state['fields'];
 		foreach ($query_insert_fields as $key => $value) {
-			// Find data type and its length.
-			$tmp_array = array();
-			$temp_str = str_replace($find, ' ', $value);
-			$tmp_array = explode(' ', $temp_str);
-			$data_type = $tmp_array[0];
-			$length = $tmp_array[1];
 			if (isset($form_state['values']['placeholder'][$key]) && !empty($form_state['values']['placeholder'][$key])) {
 				$field_value = check_plain($form_state['values']['placeholder'][$key]);
 				$validate_result = FALSE;
 				// Validate user-input.
-				$validate_result = querybuilder_validate_value($data_type, $length, $field_value); 
+				$validate_result = querybuilder_validate_value($value, $field_value); 
 				if ($validate_result) {
 					$map_insert_fields[$key] = $field_value;
 				}
@@ -260,17 +259,11 @@ function querybuilder_merge_result($form, $form_state) {
 	if (isset($form_state['update_fields']) && !empty($form_state['update_fields'])) {
 		$query_update_fields = $form_state['update_fields'];
 		foreach ($query_update_fields as $key => $value) {
-			// Find data type and its length for condition fields.
-			$tmp_array = array();
-			$temp_str = str_replace($find, ' ', $value);
-			$tmp_array = explode(' ', $temp_str);
-			$data_type = $tmp_array[0];
-			$length = $tmp_array[1];
 			if (isset($form_state['values']['placeholder_update'][$key]) && !empty($form_state['values']['placeholder_update'][$key])) {
 				$field_up_value = check_plain($form_state['values']['placeholder_update'][$key]);
 				$validate_result = FALSE;
 				// Validate user-input for condition fields.
-				$validate_result = querybuilder_validate_value($data_type, $length, $field_up_value); 
+				$validate_result = querybuilder_validate_value($value, $field_up_value); 
 				if ($validate_result) {
 					$map_update_fields[$key] = $field_up_value;
 				} 
@@ -279,18 +272,12 @@ function querybuilder_merge_result($form, $form_state) {
   }
 	if (isset($form_state['key_fields']) && !empty($form_state['key_fields'])) {
 		$query_key_fields = $form_state['key_fields'];
-		// Find data type and its length for key fields.
 		foreach ($query_key_fields as $key => $value) {
-			$tmp_array = array();
-			$temp_str = str_replace($find, ' ', $value);
-			$tmp_array = explode(' ', $temp_str);
-			$data_type = $tmp_array[0];
-			$length = $tmp_array[1];
 			if (isset($form_state['values']['placeholder_cond'][$key]) && !empty($form_state['values']['placeholder_cond'][$key])) {
 				$field_key_value = check_plain($form_state['values']['placeholder_cond'][$key]);
 				$validate_result = FALSE;
 				// Validate user-input for key fields.
-				$validate_result = querybuilder_validate_value($data_type, $length, $field_key_value); 
+				$validate_result = querybuilder_validate_value($value, $field_key_value); 
 				if ($validate_result) {
 					$map_key_fields[$key] = $field_key_value;
 				} 

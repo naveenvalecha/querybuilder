@@ -94,20 +94,22 @@ function querybuilder_update($form, &$form_state) {
 			$form['placeholder']['#type'] = 'fieldset';	
 			foreach ($query_fields as $key => $value) {
 				if (in_array($value, $sel_qry_fields)) {
-					if ($key == "blob") {
+					$fetch_key = array();
+					$fetch_key = explode('%', $key);
+					if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 					}
 					else {
-						 $map_fields[$value] = $key;
+						 $map_fields[$value] = $fetch_key[1];
 						 $form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 					}
 				}
@@ -142,25 +144,27 @@ function querybuilder_update($form, &$form_state) {
 			$form['placeholder_cond']['#type'] = 'fieldset';
 			foreach ($query_fields as $key => $value) {
 				if (in_array($value, $sel_cond_fields)) {
-					if ($key == "blob" || $key == "longblob" || $key == "mediumblob") {
+					$fetch_key = array();
+					$fetch_key = explode('%', $key);
+					if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
 						 $form['placeholder_cond'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#attributes' => array('disabled' => TRUE),
-							'#description' => t('Field Type ') . $key,
+							'#description' => t('Field Type ') . $fetch_key[1],
 						);
 					}
 					else {
-						if (strpos($key,'int') !== false || strpos($key,'float') !== false || strpos($key,'decimal') !== false) {
+						if (strpos($fetch_key[1],'int') !== false || strpos($fetch_key[1],'float') !== false || strpos($fetch_key[1],'decimal') !== false) {
 							$options = $options_num;
-							$description = $key;
+							$description = $fetch_key[1];
 							$description .= "<br>" . t("For 'between' operator value can separate by '|'");
 						}
 						else {
 							$options = $options_char;
-							$description = $key;
+							$description = $fetch_key[1];
 						}
-						$map_cond_fields[$value] = $key;
+						$map_cond_fields[$value] = $fetch_key[1];
 						$form['placeholder_cond'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
@@ -217,22 +221,15 @@ function querybuilder_update($form, &$form_state) {
  */
 function querybuilder_update_result($form, $form_state) {
   $query_table = $form_state['values']['query_table'];  
-  $act_query = NULL;
-	$find = array('(', ')');  
+  $act_query = NULL; 
   if (isset($form_state['fields']) && !empty($form_state['fields'])) {
 		$query_fields = $form_state['fields'];
 		foreach ($query_fields as $key => $value) {
-			// Find data type and its length.
-			$tmp_array = array();
-			$temp_str = str_replace($find, ' ', $value);
-			$tmp_array = explode(' ', $temp_str);
-			$data_type = $tmp_array[0];
-			$length = $tmp_array[1];
 			if (isset($form_state['values']['placeholder'][$key]) && !empty($form_state['values']['placeholder'][$key])) {
 				$field_value = check_plain($form_state['values']['placeholder'][$key]);
 				$validate_result = FALSE;
 				// Validate user-input.
-				$validate_result = querybuilder_validate_value($data_type, $length, $field_value); 
+				$validate_result = querybuilder_validate_value($value, $field_value); 
 				if ($validate_result) {
 					$map_fields_data[$key] = $field_value;
 				}	 
@@ -240,14 +237,7 @@ function querybuilder_update_result($form, $form_state) {
     }
 		if (isset($form_state['cond_fields']) && !empty($form_state['cond_fields'])) {
 			$query_cond_fields = $form_state['cond_fields'];
-			$find= array('(', ')');  
 			foreach ($query_cond_fields as $key => $value) {
-				// Find data type and its length for condition fields.
-				$tmp_array = array();
-				$temp_str = str_replace($find, ' ', $value);
-				$tmp_array = explode(' ', $temp_str);
-				$data_type = $tmp_array[0];
-				$length = $tmp_array[1];
 				$cond_field_value = NULL;
 				$validate_result = FALSE;
 				if (isset($form_state['values']['placeholder_cond'][$key]) && !empty($form_state['values']['placeholder_cond'][$key])) {
@@ -256,7 +246,7 @@ function querybuilder_update_result($form, $form_state) {
 					$chk_multi_val = explode('|', $cond_field_value);
 					foreach ($chk_multi_val as $val) { 
 						// Validate user-input for condition fields.
-						$validate_result = querybuilder_validate_value($data_type, $length, $val);
+						$validate_result = querybuilder_validate_value($value, $val);
             if (!$validate_result) {
 							break;
 						}						
