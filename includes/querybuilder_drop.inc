@@ -9,13 +9,7 @@
 module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
 
 /**
- * Implements querybuilder_drop
- *   A form for drop query.
- *
- * @param $form
- * @param $form_state
- *
- * @return array
+ * Form builder; Return form for drop.
  */
 function querybuilder_drop($form, &$form_state) {
   // Get list of tables name from database.
@@ -26,7 +20,6 @@ function querybuilder_drop($form, &$form_state) {
     '#options' => $tbl_list,
     '#default_value' => '_none',
   );
- 
 	$form['build_query'] = array(
 	 '#type' => 'checkbox',
 	 '#title' => t('Build Query'),
@@ -36,7 +29,6 @@ function querybuilder_drop($form, &$form_state) {
 			'effect' => 'fade',
 		),
 	);
- 
   $form['fieldsets'] = array(
    '#title' => t("Output"),
    '#prefix' => '<div id="textfields">',
@@ -56,21 +48,14 @@ function querybuilder_drop($form, &$form_state) {
 }
 
 /**
- * Implements querybuilder_insert_result
- *   Build query from user input.
- *
- * @param $form
- * @param $form_state
- *
- * @return string
- *   HTML string output
+ * Process result from query builder drop form.
  */
 function querybuilder_drop_result($form, $form_state) {
   $query_table = $form_state['values']['query_table'];
   if ($query_table != '_none') {	
 		$act_query = '$transaction = db_transaction();';
 		$act_query .= "<br>" . 'try {';
-		$act_query .= "<br>" . '$query = db_drop_table(\'' . $query_table . '\');';	
+		$act_query .= "<br>" . '$query = db_drop_table(\'' . $query_table . '\');';
 		$act_query .= "<br>" . '}';
 		$act_query .= "<br>" . 'catch (Exception $e) {';
 		$act_query .= "<br>" . '$transaction->rollback();';

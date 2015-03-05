@@ -2,8 +2,6 @@
 
 /**
  * @file
- * querybuilder_truncate.inc
- *
  * Demonstrates for truncate query.
  */
 
@@ -11,13 +9,7 @@
 module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
 
 /**
- * Implements querybuilder_truncate
- *   A form for truncate query.
- *
- * @param $form
- * @param $form_state
- *
- * @return array
+ * Form builder; Return form for truncate.
  */
 function querybuilder_truncate($form, &$form_state) {
   // Get list of tables name from database.
@@ -29,7 +21,6 @@ function querybuilder_truncate($form, &$form_state) {
     '#options' => $tbl_list,
     '#default_value' => '_none',
   );
-  
 	$form['build_query'] = array(
 	 '#type' => 'checkbox',
 	 '#title' => t('Build Query'),
@@ -39,14 +30,12 @@ function querybuilder_truncate($form, &$form_state) {
 			'effect' => 'fade',
 		),
 	);
- 
   $form['fieldsets'] = array(
    '#title' => t("Output"),
    '#prefix' => '<div id="textfields">',
    '#suffix' => '</div>',
    '#type' => 'fieldset',
   );
-
 	if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {    
 		$form['fieldsets']['query_outputs'] = array(
 			'#title' => 'Query and Its output',
@@ -59,14 +48,7 @@ function querybuilder_truncate($form, &$form_state) {
 }
 
 /**
- * Implements querybuilder_truncate_result
- *   Build query from user input.
- *
- * @param $form
- * @param $form_state
- *
- * @return string
- *   HTML string output
+ * Process result from query builder truncate form.
  */
 function querybuilder_truncate_result($form, $form_state) {
   $query_table = $form_state['values']['query_table'];

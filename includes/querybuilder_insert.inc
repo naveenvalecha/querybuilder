@@ -9,13 +9,7 @@
 module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
 
 /**
- * Implements querybuilder_insert
- *   A form for insert query.
- *
- * @param $form
- * @param $form_state
- *
- * @return array
+ * Form builder; Return form for insert.
  */
 function querybuilder_insert($form, &$form_state) {
   // Get list of tables name from database.
@@ -42,7 +36,6 @@ function querybuilder_insert($form, &$form_state) {
       'wrapper' => 'query-table-fields',
      )
   );
-  
   $form['query_fields'] = array(
     '#type' => 'select', 
     '#title' => 'Select Fields',
@@ -56,14 +49,13 @@ function querybuilder_insert($form, &$form_state) {
       'wrapper' => 'placeholder-fields',
       )
   );
-
   $form['placeholder'] = array(
     '#type' => 'hidden',
     '#prefix' => '<div id="placeholder-fields">',
     '#suffix' => '</div>',
     '#tree' => TRUE,
   );
-	
+
   $map_fields = array();
   if (!empty($sel_qry_fields) && isset($form_state['values']['query_fields'])) {
     if (!array_key_exists('_none', $sel_qry_fields)) {
@@ -123,14 +115,7 @@ function querybuilder_insert($form, &$form_state) {
 }
 
 /**
- * Implements querybuilder_insert_result
- *   Build query from user input.
- *
- * @param $form
- * @param $form_state
- *
- * @return string
- *   HTML string output
+ * Process result from query builder insert form.
  */
 function querybuilder_insert_result($form, $form_state) {
   $query_table = $form_state['values']['query_table'];

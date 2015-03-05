@@ -9,13 +9,7 @@
 module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
 
 /**
- * Implements querybuilder_select
- *   A form for select query.
- *
- * @param $form
- * @param $form_state
- *
- * @return array
+ * Form builder; Return form for select.
  */
 function querybuilder_select($form, &$form_state) {
   $options_char = array(
@@ -69,7 +63,6 @@ function querybuilder_select($form, &$form_state) {
         ),
       )
   );
-  
   $form['placeholder_join'] = array(
     '#type' => 'hidden',
     '#prefix' => '<div id="query-table-join">',
@@ -88,13 +81,11 @@ function querybuilder_select($form, &$form_state) {
           '#type' => 'fieldset',
           '#tree' => TRUE,
         );
-
          $form['placeholder_join']['joingrp_' . $limit][$limit . "_L"] = array(
           '#type' => 'select', 
           '#title' => 'Join Fields',
           '#options' => $query_fields_list,
         );
-
         $form['placeholder_join']['joingrp_' . $limit][$limit . "_R"] = array(
           '#type' => 'select', 
           '#title' => 'Join Fields',
@@ -103,7 +94,6 @@ function querybuilder_select($form, &$form_state) {
       }
     }
   }
-
   $form['query_fields'] = array(
     '#type' => 'select', 
     '#title' => 'Fetch Fields',
@@ -113,7 +103,6 @@ function querybuilder_select($form, &$form_state) {
     '#prefix' => '<div id="query-table-fields">',
     '#suffix' => '</div>',
   );
-
   $form['condition_fields'] = array(
     '#type' => 'select', 
     '#title' => 'Condition Fields',
@@ -127,7 +116,6 @@ function querybuilder_select($form, &$form_state) {
       'wrapper' => 'placeholder-fields-condition',
       )
   ); 
-
   $form['placeholder_cond'] = array(
     '#type' => 'hidden',
     '#prefix' => '<div id="placeholder-fields-condition">',
@@ -178,7 +166,6 @@ function querybuilder_select($form, &$form_state) {
 			$form_state['cond_fields'] = $map_cond_fields;
 		}
 	}
-	
   $form['build_query'] = array(
    '#type' => 'checkbox',
    '#title' => t('Build Query'),
@@ -188,14 +175,12 @@ function querybuilder_select($form, &$form_state) {
       'effect' => 'fade',
     ),
   );
-
 	$form['fieldsets'] = array(
     '#title' => t("Output"),
     '#prefix' => '<div id="textfields">',
     '#suffix' => '</div>',
     '#type' => 'fieldset',
   );
-
 	if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {  
 		$form['fieldsets']['query_outputs'] = array(
 			'#title' => 'Query and Its output',
@@ -208,14 +193,7 @@ function querybuilder_select($form, &$form_state) {
 }
 
 /**
- * Implements querybuilder_select_result
- *   Build query from user input.
- *
- * @param $form
- * @param $form_state
- *
- * @return string
- *   HTML string output
+ * Process result from query builder select form.
  */
 function querybuilder_select_result($form, $form_state) {
   $query_table_array = $form_state['values']['query_table'];

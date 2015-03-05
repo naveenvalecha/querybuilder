@@ -2,8 +2,6 @@
 
 /**
  * @file
- * querybuilder_optimise.inc
- *
  * Optimise database.
  */
 
@@ -11,13 +9,7 @@
 module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
 
 /**
- * Implements querybuilder_truncate
- *   A form for truncate query.
- *
- * @param $form
- * @param $form_state
- *
- * @return array
+ * Form builder; Return form for clear cache.
  */
 function querybuilder_optimise($form, &$form_state) {
 	$form['optimise'] = array(
@@ -34,14 +26,16 @@ function querybuilder_optimise($form, &$form_state) {
 }
 
 /**
- * Submit handler for 'add entry' form.
+ * Process result from querybuilder optimise form.
  */
 function querybuilder_optimise_submit($form, $form_state) {
   $optimise = $form_state['values']['optimise'];
   if ($optimise) {
   	variable_set['clear_cache_by_cron'] = TRUE;
   }
- 
+  else {
+    variable_set['clear_cache_by_cron'] = FALSE;
+  }
 	return;
 }
 
@@ -52,6 +46,5 @@ function querybuilder_cron() {
   $clear_cache = variable_get['clear_cache_by_cron'];
   if (!empty($clear_cache)) {
   	drupal_flush_all_caches();
-  	variable_set['clear_cache_by_cron'] = TRUE;
   }
 }

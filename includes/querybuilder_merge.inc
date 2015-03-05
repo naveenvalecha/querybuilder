@@ -8,13 +8,7 @@
 module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
 
 /**
- * Implements querybuilder_merge
- *   A form for update query.
- *
- * @param $form
- * @param $form_state
- *
- * @return array
+ * Form builder; Return form for merge.
  */
 function querybuilder_merge($form, &$form_state) {
   // Get list of tables name from database.
@@ -46,7 +40,6 @@ function querybuilder_merge($form, &$form_state) {
         ),
       )
   );
-  
   $form['query_fields'] = array(
     '#type' => 'select', 
     '#title' => 'Insert Fields',
@@ -60,7 +53,6 @@ function querybuilder_merge($form, &$form_state) {
       'wrapper' => 'placeholder-fields',
       )
   );
-
   $form['placeholder'] = array(
     '#type' => 'hidden',
     '#prefix' => '<div id="placeholder-fields">',
@@ -229,14 +221,7 @@ function querybuilder_merge($form, &$form_state) {
 }
 
 /**
- * Implements querybuilder_merge_result
- *   Build query from user input.
- *
- * @param $form
- * @param $form_state
- *
- * @return string
- *   HTML string output
+ * Process result from query builder merge form.
  */
 function querybuilder_merge_result($form, $form_state) {
 	$query_table = $form_state['values']['query_table'];  

@@ -24,7 +24,7 @@ function querybuilder_get_tables() {
 /**
  * Implements helper function for fetching list of fields name from table(s).
  *
- * @param string/array $tables
+ * @param string|array $tables
  *   Array of tables name.
  *
  * @return array $field_list

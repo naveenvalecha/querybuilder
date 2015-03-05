@@ -9,13 +9,7 @@
 module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
 
 /**
- * Implements querybuilder_delete
- *   A form for delete query.
- *
- * @param $form
- * @param $form_state
- *
- * @return array
+ * Form builder; Return form for delete.
  */
 function querybuilder_delete($form, &$form_state) {
   $options_char = array('eq' => 'Is equal to',
@@ -27,7 +21,6 @@ function querybuilder_delete($form, &$form_state) {
     'em' => 'Is Empty',
     'nem' => 'Not Empty',
   );
-
   $options_num = array('eq' => 'equal to',
     'neq' => 'Is not equal to',
     'lt' => 'Less than',
@@ -63,7 +56,6 @@ function querybuilder_delete($form, &$form_state) {
       'wrapper' => 'query-table-fields',
       )
   );
-  
   $form['query_fields'] = array(
     '#type' => 'select', 
     '#title' => 'Select Fields',
@@ -77,7 +69,6 @@ function querybuilder_delete($form, &$form_state) {
       'wrapper' => 'placeholder-fields',
       )
   );
-
   $form['placeholder'] = array(
     '#type' => 'hidden',
     '#prefix' => '<div id="placeholder-fields">',
@@ -101,24 +92,22 @@ function querybuilder_delete($form, &$form_state) {
 						);
 					}
 					else {
-
 						if (strpos($fetch_key[1],'int') !== false || strpos($fetch_key[1],'float') !== false || strpos($fetch_key[1],'decimal') !== false) {
 							$options = $options_num;
 							$description = $fetch_key[1];
-							$description .= "<br>" . t("For 'between' operator value can seperate by '|'");
+							$description .= "<br>" . t("For 'between' operator value can separate by '|'");
 						}
 						else {
 							$options = $options_char;
 							$description = $fetch_key[1];
 						}
 
-						 $map_fields[$value] = $fetch_key[1];
-						 $form['placeholder'][$value] = array(
+						$map_fields[$value] = $fetch_key[1];
+						$form['placeholder'][$value] = array(
 							'#type' => 'textfield', 
 							'#title' => 'Value for ' . $value,
 							'#description' => t('Field Type ') . $description,
 						);
-
 						$form['placeholder'][$value . "_operator"] = array(
 							'#type' => 'select', 
 							'#title' => 'Operator for ' . $value,
@@ -130,7 +119,6 @@ function querybuilder_delete($form, &$form_state) {
 			$form_state['fields'] = $map_fields;
 		}
   }
-
   $form['build_query'] = array(
    '#type' => 'checkbox',
    '#title' => t('Build Query'),
@@ -140,15 +128,12 @@ function querybuilder_delete($form, &$form_state) {
       'effect' => 'fade',
     ),
   );
-
- 
   $form['fieldsets'] = array(
     '#title' => t("Output"),
     '#prefix' => '<div id="textfields">',
     '#suffix' => '</div>',
     '#type' => 'fieldset',
   );
-
   if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {    
 		$form['fieldsets']['query_outputs'] = array(
 			'#title' => 'Query and Its output',
@@ -161,14 +146,7 @@ function querybuilder_delete($form, &$form_state) {
 }
 
 /**
- * Implements querybuilder_delete_result
- *   Build query from user input.
- *
- * @param $form
- * @param $form_state
- *
- * @return string
- *   HTML string output
+ * Process result from query builder delete form.
  */
 function querybuilder_delete_result($form, $form_state) {
   $query_table = $form_state['values']['query_table'];

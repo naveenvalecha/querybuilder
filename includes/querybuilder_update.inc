@@ -9,13 +9,7 @@
 module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
 
 /**
- * Implements querybuilder_update
- *   A form for update query.
- *
- * @param $form
- * @param $form_state
- *
- * @return array
+ * Form builder; Return form for update.
  */
 function querybuilder_update($form, &$form_state) {
   $options_char = array('eq' => 'Is equal to',
@@ -27,7 +21,6 @@ function querybuilder_update($form, &$form_state) {
     'em' => 'Is Empty',
     'nem' => 'Not Empty',
   );
-
   $options_num = array('eq' => 'equal to',
     'neq' => 'Is not equal to',
     'lt' => 'Less than',
@@ -66,7 +59,6 @@ function querybuilder_update($form, &$form_state) {
         ),
       )
   );
-  
 	$form['query_fields'] = array(
     '#type' => 'select', 
     '#title' => 'Set Fields',
@@ -80,7 +72,6 @@ function querybuilder_update($form, &$form_state) {
       'wrapper' => 'placeholder-fields',
       )
   );
-	
   $form['placeholder'] = array(
     '#type' => 'hidden',
     '#prefix' => '<div id="placeholder-fields">',
@@ -130,7 +121,6 @@ function querybuilder_update($form, &$form_state) {
       'wrapper' => 'placeholder-fields-condition',
       )
   ); 
-
 	$form['placeholder_cond'] = array(
     '#type' => 'hidden',
     '#prefix' => '<div id="placeholder-fields-condition">',
@@ -190,7 +180,6 @@ function querybuilder_update($form, &$form_state) {
       'effect' => 'fade',
     ),
   );
-
   $form['fieldsets'] = array(
     '#title' => t("Output"),
     '#prefix' => '<div id="textfields">',
@@ -210,14 +199,7 @@ function querybuilder_update($form, &$form_state) {
 }
 
 /**
- * Implements querybuilder_update_result
- *   Build query from user input.
- *
- * @param $form
- * @param $form_state
- *
- * @return string
- *   HTML string output
+ * Process result from query builder update form.
  */
 function querybuilder_update_result($form, $form_state) {
   $query_table = $form_state['values']['query_table'];  
