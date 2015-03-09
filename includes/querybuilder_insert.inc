@@ -33,7 +33,7 @@ function querybuilder_insert($form, &$form_state) {
     '#ajax' => array(
       'callback' => 'querybuilder_querytable_callback',
       'wrapper' => 'query-table-fields',
-     )
+    )
   );
   $form['query_fields'] = array(
     '#type' => 'select', 
@@ -67,7 +67,7 @@ function querybuilder_insert($form, &$form_state) {
               '#type' => 'textfield', 
               '#title' => 'Value for ' . $value,
               '#attributes' => array('disabled' => TRUE),
-              '#description' => t('Field Type ') . $fetch_key[1],
+              '#description' => t('Field Type-') . $fetch_key[1],
             );
           }
           else {
@@ -75,7 +75,7 @@ function querybuilder_insert($form, &$form_state) {
             $form['placeholder'][$value] = array(
               '#type' => 'textfield', 
               '#title' => 'Value for ' . $value,
-              '#description' => t('Field Type ') . $fetch_key[1],
+              '#description' => t('Field Type-') . $fetch_key[1],
             );
           }
         }
@@ -92,14 +92,12 @@ function querybuilder_insert($form, &$form_state) {
       'effect' => 'fade',
     ),
   );
-
   $form['fieldsets'] = array(
     '#title' => t("Output"),
     '#prefix' => '<div id="textfields">',
     '#suffix' => '</div>',
     '#type' => 'fieldset',
   );
-
   if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {    
     $form['fieldsets']['query_outputs'] = array(
       '#title' => 'Query and Its output',
@@ -118,44 +116,42 @@ function querybuilder_insert_result($form, $form_state) {
   $query_table = $form_state['values']['query_table'];
   $map_fields_data = array(); 
   if (isset($form_state['fields']) && !empty($form_state['fields'])) {
-		$query_fields = $form_state['fields'];
-		foreach ($query_fields as $key => $value) {
-			if (isset($form_state['values']['placeholder'][$key]) && !empty($form_state['values']['placeholder'][$key])) {
-				$field_value = check_plain($form_state['values']['placeholder'][$key]);
-				$validate_result = FALSE;
-				// Validate user-input.
-				$validate_result = querybuilder_validate_value($value, $field_value); 
-				if ($validate_result) {
-					$map_fields_data[$key] = $field_value;
-				}
-      }				
-		}
-    if (!empty($map_fields_data)) {		
-			$act_query = '$transaction = db_transaction();';
-			$act_query .= "<br>" . 'try {';
-			$act_query .= "<br>" . '$query = db_insert(\'' . $query_table . '\')' . "<br>";
-			$act_query .= '->fields(array(';
-			foreach ($map_fields_data as $key => $value) {
-				 $act_query .= "<br>" . '\'' . $key . '\' => ' . '\'' . $value . '\',';
-			}
-			$act_query .= "<br>" . '))->execute();';
-			$act_query .= "<br>" . '}';
-			$act_query .= "<br>" . 'catch (Exception $e) {';
-			$act_query .= "<br>" . '$transaction->rollback();';
-			$act_query .= "<br>" . 'watchdog_exception(\'Query_Issue\', $e);';
-			$act_query .= "<br>" . '}';	
-		}
-		else {
-			$act_query = 'Insert data';
-		}
-	}
-	else {
-		$act_query = 'Insufficient data!';
-	}
-	$header = array(array('data' => "Query"));
-	$rows = array();
-	$rows['query'] = array($act_query);
-	$output = theme('table', array('header' => $header, 'rows' => $rows)); 
-	return $output;
+    $query_fields = $form_state['fields'];
+    foreach ($query_fields as $key => $value) {
+      if (isset($form_state['values']['placeholder'][$key]) && !empty($form_state['values']['placeholder'][$key])) {
+        $field_value = check_plain($form_state['values']['placeholder'][$key]);
+        $validate_result = FALSE;
+        // Validate user-input.
+        $validate_result = querybuilder_validate_value($value, $field_value); 
+        if ($validate_result) {
+          $map_fields_data[$key] = $field_value;
+        }
+      }
+    }
+    if (!empty($map_fields_data)) {
+      $act_query .= "<br>" . 'try {';
+      $act_query .= "<br>" . '$query = db_insert(\'' . $query_table . '\')' . "<br>";
+      $act_query .= '->fields(array(';
+      foreach ($map_fields_data as $key => $value) {
+        $act_query .= "<br>" . '\'' . $key . '\' => ' . '\'' . $value . '\',';
+      }
+      $act_query .= "<br>" . '))->execute();';
+      $act_query .= "<br>" . '}';
+      $act_query .= "<br>" . 'catch (Exception $e) {';
+      $act_query .= "<br>" . '$transaction->rollback();';
+      $act_query .= "<br>" . 'watchdog_exception(\'Query_Issue\', $e);';
+      $act_query .= "<br>" . '}';
+    }
+    else {
+      $act_query = 'Insert data';
+    }
+  }
+  else {
+    $act_query = 'Insufficient data!';
+  }
+  $header = array(array('data' => "Query"));
+  $rows = array();
+  $rows['query'] = array($act_query);
+  $output = theme('table', array('header' => $header, 'rows' => $rows)); 
+  return $output;
 }
-

@@ -146,22 +146,22 @@ function querybuilder_permission() {
       'description' => t('Administer site configuration.'),
       'restrict access' => TRUE,
     ),
-	  'access insert query page' => array(
+    'access insert query page' => array(
       'title' => t('Access insert query page'),
       'description' => t('Access insert query page for building dynamic query.'),
       'restrict access' => TRUE,
     ),
-	  'access upadate query page' => array(
+    'access upadate query page' => array(
       'title' => t('Access upadate query page'),
       'description' => t('Access update query page for building dynamic query.'),
       'restrict access' => TRUE,
     ),
-	  'access merge query page' => array(
+    'access merge query page' => array(
       'title' => t('Access merge query page'),
       'description' => t('Access insert/update query page for building dynamic query.'),
       'restrict access' => TRUE,
     ),
-	  'access delete query page' => array(
+    'access delete query page' => array(
       'title' => t('Access delete query page'),
       'description' => t('Access delete query page.'),
       'restrict access' => TRUE,
@@ -171,7 +171,7 @@ function querybuilder_permission() {
       'description' => t('Access truncate query page.'),
       'restrict access' => TRUE,
     ),
-	  'access select query page' => array(
+    'access select query page' => array(
       'title' => t('Access select query page'),
       'description' => t('Access select query page for building dynamic query.'),
       'restrict access' => TRUE,
@@ -189,3 +189,14 @@ function querybuilder_permission() {
   );
 }
 
+/**
+ * Implements hook_cron().
+ */
+function querybuilder_cron() {
+  $clear_cache = variable_get('clear_cache_by_cron'); 
+  if (!empty($clear_cache)) {
+    $msg = t("Cache cleared.");
+    drupal_flush_all_caches();
+    drupal_set_message(check_plain($msg));
+  }
+}

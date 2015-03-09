@@ -10,7 +10,7 @@ CONTENTS OF THIS FILE
 INTRODUCTION
 ------------
 
-Query Builder is a module which build dynamic query for developers. That module helps the drupal developer especially those guys which are fresher in drupal.It reduces the amount of time for building query.
+Query Builder is a module which build dynamic query for developers. That module helps the drupal developer especially those guys which are fresher in drupal.It reduces the amount of time for building query. It also provide options to clear cache, every time when cron run.
 
 
 INSTALLATION
