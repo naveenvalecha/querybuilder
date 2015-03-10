@@ -65,7 +65,7 @@ function _querybuilder_get_fields($tables) {
  * @param string $field_value
  *   Value of data type.
  *
- * @return boolean
+ * @return bool
  *   Returns TRUE|FALSE.
  */
 function querybuilder_validate_value($data_type, $field_value) {
@@ -77,15 +77,19 @@ function querybuilder_validate_value($data_type, $field_value) {
     case 'varchar':
       $result = TRUE;
       break;
+
     case 'longtext':
       $result = TRUE;
       break;
+
     case 'mediumtext':
       $result = TRUE;
       break;
+
     case 'text':
       $result = TRUE;
       break;
+
     case 'int':
       if (!is_numeric($field_value)) {      
         $result = FALSE;
@@ -94,6 +98,7 @@ function querybuilder_validate_value($data_type, $field_value) {
          $result = TRUE;
       }
       break;
+
     case 'tinyint':
       if (!is_numeric($field_value)) {
         $result = FALSE;
@@ -102,6 +107,7 @@ function querybuilder_validate_value($data_type, $field_value) {
          $result = TRUE;
       }
       break;
+
     case 'serial':
       if (!is_numeric($field_value)) {
         $result = FALSE;
@@ -110,6 +116,7 @@ function querybuilder_validate_value($data_type, $field_value) {
         $result = TRUE;
       }
       break;
+      
     case 'float':
       if (!is_numeric($field_value)) {
         $result = FALSE;
@@ -183,11 +190,11 @@ function querybuilder_actual_operator($operator) {
 
     case 'em':
       $sign = 'isNull';
-      break; 
+      break;
 
     case 'nem':
       $sign = 'isNotNull';
-      break; 
+      break;
 
     default:
       $sign = '=';
@@ -205,43 +212,44 @@ function querybuilder_actual_operator($operator) {
 function querybuilder_querytable_callback($form, $form_state) {
   // Check form-ID.
   if ($form['form_id']['#value'] == "querybuilder_update") {
-      return array(
+    return array(
       '#type' => 'ajax',
       '#commands' => array(
         ajax_command_replace("#query-table-fields", render($form['query_fields'])),
         ajax_command_replace("#query-table-fields-condition", render($form['condition_fields'])),
       ),
-     );
+    );
   }
-  elseif ($form['form_id']['#value'] == "querybuilder_select") { 
-      return array(
+  elseif ($form['form_id']['#value'] == "querybuilder_select") {
+    return array(
       '#type' => 'ajax',
       '#commands' => array(
         ajax_command_replace("#query-table-fields", render($form['query_fields'])),
         ajax_command_replace("#query-table-join", render($form['placeholder_join'])),
         ajax_command_replace("#query-table-fields-condition", render($form['condition_fields'])),
       ),
-     );
+    );
   }
-  elseif ($form['form_id']['#value'] == "querybuilder_merge") { 
-      return array(
+  elseif ($form['form_id']['#value'] == "querybuilder_merge") {
+    return array(
       '#type' => 'ajax',
       '#commands' => array(
         ajax_command_replace("#query-table-fields", render($form['query_fields'])),
         ajax_command_replace("#query-table-fields-update", render($form['query_fields_update'])),
         ajax_command_replace("#query-table-fields-key", render($form['query_fields_key'])),
       ),
-     );
+    );
   }
   else {
     return $form['query_fields'];
-  }  
+  }
 }
 
 /**
  * Implements callback function .
  *
- * @return renderable array (the placeholder element)
+ * @return renderable array 
+ *   The placeholder element.
  */
 function querybuilder_queryfield_callback($form, $form_state) {
   return $form['placeholder'];
