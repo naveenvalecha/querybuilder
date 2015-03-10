@@ -23,20 +23,21 @@ function querybuilder_merge($form, &$form_state) {
     // Get list of field name from table.
     $query_fields = _querybuilder_get_fields($sel_qry_table);
     $query_fields_list = array_combine($query_fields, $query_fields);
-  }  
+  }
   $query_fields_list['_none'] = "Select Fields";
   $form['query_table'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Select Table',
     '#options' => $tbl_list,
     '#default_value' => '_none',
     '#ajax' => array(
       'callback' => 'querybuilder_querytable_callback',
-      'wrapper' => array('query-table-fields',
+      'wrapper' => array(
+        'query-table-fields',
         'query-table-fields-update',
         'query-table-fields-key',
-        ),
-      )
+      ),
+    )
   );
   $form['query_fields'] = array(
     '#type' => 'select', 

@@ -35,4 +35,3 @@ MAINTAINERS
 Current Maintainers:
 
 • Rahul Seth          - https://www.drupal.org/user/2694359
-

@@ -15,7 +15,7 @@ function querybuilder_optimise($form, &$form_state) {
   $form['optimise'] = array(
     '#type' => 'checkbox',
     '#title' => t('Optimise database'),
-    '#default_value' => variable_get('clear_cache_by_cron'),
+    '#default_value' => variable_get('querybuilder_clear_cache_by_cron'),
     '#description' => t('When checked, clear cache every time when cron run.'),
   );
   $form['submit'] = array(
@@ -31,11 +31,9 @@ function querybuilder_optimise($form, &$form_state) {
 function querybuilder_optimise_submit($form, $form_state) {
   $optimise = $form_state['values']['optimise'];
   if ($optimise) {
-    variable_set('clear_cache_by_cron', TRUE);
+    variable_set('querybuilder_clear_cache_by_cron', TRUE);
   }
   else {
-    variable_set('clear_cache_by_cron', FALSE);
+    variable_set('querybuilder_clear_cache_by_cron', FALSE);
   }
-  return;
 }
-

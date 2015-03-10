@@ -12,7 +12,8 @@ module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
  * Form builder; Return form for delete.
  */
 function querybuilder_delete($form, &$form_state) {
-  $options_char = array('eq' => 'Is equal to',
+  $options_char = array(
+    'eq' => 'Is equal to',
     'neq' => 'Is not equal to',
     'sw' => 'Start with',
     'nsw' => 'Does not start with',
@@ -21,7 +22,8 @@ function querybuilder_delete($form, &$form_state) {
     'em' => 'Is Empty',
     'nem' => 'Not Empty',
   );
-  $options_num = array('eq' => 'equal to',
+  $options_num = array(
+    'eq' => 'equal to',
     'neq' => 'Is not equal to',
     'lt' => 'Less than',
     'elt' => 'Less than or equal to',
@@ -41,7 +43,7 @@ function querybuilder_delete($form, &$form_state) {
     // Get list of field name from table.
     $query_fields = _querybuilder_get_fields($sel_qry_table);
     $query_fields_list = array_combine($query_fields, $query_fields);
-  }  
+  }
   $query_fields_list['_none'] = "Select Fields";
   $form['query_table'] = array(
     '#type' => 'select', 
@@ -50,20 +52,20 @@ function querybuilder_delete($form, &$form_state) {
     '#default_value' => '_none',
     '#ajax' => array(
       'callback' => 'querybuilder_querytable_callback',
-      'wrapper' => 'query-table-fields',
+      'wrapper' => 'query-table-fields'
     )
   );
   $form['query_fields'] = array(
     '#type' => 'select',
     '#title' => 'Select Fields',
-    '#multiple' => TRUE, 
+    '#multiple' => TRUE,
     '#default_value' => '_none',
     '#options' => $query_fields_list,
     '#prefix' => '<div id="query-table-fields">',
     '#suffix' => '</div>',
     '#ajax' => array(
       'callback' => 'querybuilder_queryfield_callback',
-      'wrapper' => 'placeholder-fields',
+      'wrapper' => 'placeholder-fields'
     )
   );
   $form['placeholder'] = array(
@@ -82,7 +84,7 @@ function querybuilder_delete($form, &$form_state) {
         if (in_array($value, $sel_qry_fields)) {
           if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
             $form['placeholder'][$value] = array(
-              '#type' => 'textfield', 
+              '#type' => 'textfield',
               '#title' => 'Value for ' . $value,
               '#attributes' => array('disabled' => TRUE),
               '#description' => t('Field Type-') . $fetch_key[1],
@@ -100,12 +102,12 @@ function querybuilder_delete($form, &$form_state) {
             }
             $map_fields[$value] = $fetch_key[1];
             $form['placeholder'][$value] = array(
-              '#type' => 'textfield', 
+              '#type' => 'textfield',
               '#title' => 'Value for ' . $value,
               '#description' => t('Field Type-') . $description,
             );
             $form['placeholder'][$value . "_operator"] = array(
-              '#type' => 'select', 
+              '#type' => 'select',
               '#title' => 'Operator for ' . $value,
               '#options' => $options,
             );
@@ -125,10 +127,10 @@ function querybuilder_delete($form, &$form_state) {
     ),
   );
   $form['fieldsets'] = array(
-   '#title' => t("Output"),
-   '#prefix' => '<div id="textfields">',
-   '#suffix' => '</div>',
-   '#type' => 'fieldset',
+    '#title' => t("Output"),
+    '#prefix' => '<div id="textfields">',
+    '#suffix' => '</div>',
+    '#type' => 'fieldset',
   );
   if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {
     $form['fieldsets']['query_outputs'] = array(
@@ -212,7 +214,6 @@ function querybuilder_delete_result($form, $form_state) {
   $header = array(array('data' => "Query"));
   $rows = array();
   $rows['query'] = array($act_query);
-  $output = theme('table', array('header' => $header, 'rows' => $rows)); 
+  $output = theme('table', array('header' => $header, 'rows' => $rows));
   return $output;
 }
-

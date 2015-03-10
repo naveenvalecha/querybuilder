@@ -15,7 +15,7 @@ function querybuilder_drop($form, &$form_state) {
   // Get list of tables name from database.
   $tbl_list = querybuilder_get_tables();
   $form['query_table'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Select Table',
     '#options' => $tbl_list,
     '#default_value' => '_none',
@@ -35,7 +35,7 @@ function querybuilder_drop($form, &$form_state) {
     '#suffix' => '</div>',
     '#type' => 'fieldset',
   );
-  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {    
+  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {
     $form['fieldsets']['query_outputs'] = array(
       '#title' => 'Query and Its output',
       '#markup' => querybuilder_drop_result($form, $form_state),
@@ -51,13 +51,14 @@ function querybuilder_drop($form, &$form_state) {
  */
 function querybuilder_drop_result($form, $form_state) {
   $query_table = $form_state['values']['query_table'];
+  $act_query = NULL;
   if ($query_table != '_none') {
     $act_query = '$transaction = db_transaction();';
     $act_query .= "<br>" . 'try {';
     $act_query .= "<br>" . '$query = db_drop_table(\'' . $query_table . '\');';
     $act_query .= "<br>" . '}';
     $act_query .= "<br>" . 'catch (Exception $e) {';
-    $act_query .= "<br>" . '$transaction->rollback();'; 
+    $act_query .= "<br>" . '$transaction->rollback();';
     $act_query .= "<br>" . 'watchdog_exception(\'Query_Issue\', $e);';
     $act_query .= "<br>" . '}';
   }
@@ -67,7 +68,6 @@ function querybuilder_drop_result($form, $form_state) {
   $header = array(array('data' => "Query"));
   $rows = array();
   $rows['query'] = array($act_query);
-  $output = theme('table', array('header' => $header, 'rows' => $rows)); 
+  $output = theme('table', array('header' => $header, 'rows' => $rows));
   return $output;
 }
-

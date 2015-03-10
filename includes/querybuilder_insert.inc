@@ -23,10 +23,10 @@ function querybuilder_insert($form, &$form_state) {
     // Get list of field name from table.
     $query_fields = _querybuilder_get_fields($sel_qry_table);
     $query_fields_list = array_combine($query_fields, $query_fields);
-  }  
+  }
   $query_fields_list['_none'] = "Select Fields";
   $form['query_table'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Select Table',
     '#options' => $tbl_list,
     '#default_value' => '_none',
@@ -36,16 +36,16 @@ function querybuilder_insert($form, &$form_state) {
     )
   );
   $form['query_fields'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Select Fields',
-    '#multiple' => TRUE, 
+    '#multiple' => TRUE,
     '#default_value' => '_none',
     '#options' => $query_fields_list,
     '#prefix' => '<div id="query-table-fields">',
     '#suffix' => '</div>',
     '#ajax' => array(
       'callback' => 'querybuilder_queryfield_callback',
-      'wrapper' => 'placeholder-fields',
+      'wrapper' => 'placeholder-fields'
     )
   );
   $form['placeholder'] = array(
@@ -64,7 +64,7 @@ function querybuilder_insert($form, &$form_state) {
         if (in_array($value, $sel_qry_fields)) {
           if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
             $form['placeholder'][$value] = array(
-              '#type' => 'textfield', 
+              '#type' => 'textfield',
               '#title' => 'Value for ' . $value,
               '#attributes' => array('disabled' => TRUE),
               '#description' => t('Field Type-') . $fetch_key[1],
@@ -73,7 +73,7 @@ function querybuilder_insert($form, &$form_state) {
           else {
             $map_fields[$value] = $fetch_key[1];
             $form['placeholder'][$value] = array(
-              '#type' => 'textfield', 
+              '#type' => 'textfield',
               '#title' => 'Value for ' . $value,
               '#description' => t('Field Type-') . $fetch_key[1],
             );
@@ -81,7 +81,7 @@ function querybuilder_insert($form, &$form_state) {
         }
       }
       $form_state['fields'] = $map_fields;
-    }  
+    }
   }
   $form['build_query'] = array(
     '#type' => 'checkbox',
@@ -98,7 +98,7 @@ function querybuilder_insert($form, &$form_state) {
     '#suffix' => '</div>',
     '#type' => 'fieldset',
   );
-  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {    
+  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) { 
     $form['fieldsets']['query_outputs'] = array(
       '#title' => 'Query and Its output',
       '#markup' => querybuilder_insert_result($form, $form_state),
@@ -114,7 +114,8 @@ function querybuilder_insert($form, &$form_state) {
  */
 function querybuilder_insert_result($form, $form_state) {
   $query_table = $form_state['values']['query_table'];
-  $map_fields_data = array(); 
+  $act_query = NULL;
+  $map_fields_data = array();
   if (isset($form_state['fields']) && !empty($form_state['fields'])) {
     $query_fields = $form_state['fields'];
     foreach ($query_fields as $key => $value) {
@@ -122,7 +123,7 @@ function querybuilder_insert_result($form, $form_state) {
         $field_value = check_plain($form_state['values']['placeholder'][$key]);
         $validate_result = FALSE;
         // Validate user-input.
-        $validate_result = querybuilder_validate_value($value, $field_value); 
+        $validate_result = querybuilder_validate_value($value, $field_value);
         if ($validate_result) {
           $map_fields_data[$key] = $field_value;
         }
@@ -133,7 +134,7 @@ function querybuilder_insert_result($form, $form_state) {
       $act_query .= "<br>" . '$query = db_insert(\'' . $query_table . '\')' . "<br>";
       $act_query .= '->fields(array(';
       foreach ($map_fields_data as $key => $value) {
-        $act_query .= "<br>" . '\'' . $key . '\' => ' . '\'' . $value . '\',';
+        $act_query .= "<br>" . '\'' . $key . '\' => \'' . $value . '\',';
       }
       $act_query .= "<br>" . '))->execute();';
       $act_query .= "<br>" . '}';
@@ -152,6 +153,6 @@ function querybuilder_insert_result($form, $form_state) {
   $header = array(array('data' => "Query"));
   $rows = array();
   $rows['query'] = array($act_query);
-  $output = theme('table', array('header' => $header, 'rows' => $rows)); 
+  $output = theme('table', array('header' => $header, 'rows' => $rows));
   return $output;
 }

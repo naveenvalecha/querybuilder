@@ -15,7 +15,7 @@ function querybuilder_truncate($form, &$form_state) {
   // Get list of tables name from database.
   $tbl_list = querybuilder_get_tables();
   $form['query_table'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Select Table',
     '#options' => $tbl_list,
     '#default_value' => '_none',
@@ -35,7 +35,7 @@ function querybuilder_truncate($form, &$form_state) {
    '#suffix' => '</div>',
    '#type' => 'fieldset',
   );
-  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {    
+  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) { 
     $form['fieldsets']['query_outputs'] = array(
       '#title' => 'Query and Its output',
       '#markup' => querybuilder_truncate_result($form, $form_state),
@@ -70,4 +70,3 @@ function querybuilder_truncate_result($form, $form_state) {
   $output = theme('table', array('header' => $header, 'rows' => $rows)); 
   return $output;
 }
-
