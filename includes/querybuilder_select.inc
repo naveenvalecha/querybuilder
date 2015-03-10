@@ -77,12 +77,12 @@ function querybuilder_select($form, &$form_state) {
           '#tree' => TRUE,
         );
         $form['placeholder_join']['joingrp_' . $limit][$limit . "_L"] = array(
-          '#type' => 'select', 
+          '#type' => 'select',
           '#title' => 'Join Fields',
           '#options' => $query_fields_list,
         );
         $form['placeholder_join']['joingrp_' . $limit][$limit . "_R"] = array(
-          '#type' => 'select', 
+          '#type' => 'select',
           '#title' => 'Join Fields',
           '#options' => $query_fields_list,
         );
@@ -90,7 +90,7 @@ function querybuilder_select($form, &$form_state) {
     }
   }
   $form['query_fields'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Fetch Fields',
     '#multiple' => TRUE,
     '#default_value' => '_none',
@@ -99,9 +99,9 @@ function querybuilder_select($form, &$form_state) {
     '#suffix' => '</div>',
   );
   $form['condition_fields'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Condition Fields',
-    '#multiple' => TRUE, 
+    '#multiple' => TRUE,
     '#default_value' => '_none',
     '#options' => $query_fields_list,
     '#prefix' => '<div id="query-table-fields-condition">',
@@ -109,8 +109,8 @@ function querybuilder_select($form, &$form_state) {
     '#ajax' => array(
       'callback' => 'querybuilder_condfield_callback',
       'wrapper' => 'placeholder-fields-condition',
-      )
-  ); 
+    ),
+  );
   $form['placeholder_cond'] = array(
     '#type' => 'hidden',
     '#prefix' => '<div id="placeholder-fields-condition">',
@@ -127,7 +127,7 @@ function querybuilder_select($form, &$form_state) {
         if (in_array($value, $sel_cond_fields)) {
           if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
             $form['placeholder_cond'][$value] = array(
-              '#type' => 'textfield', 
+              '#type' => 'textfield',
               '#title' => 'Value for ' . $value,
               '#attributes' => array('disabled' => TRUE),
               '#description' => t('Field Type-') . $fetch_key[1],
@@ -145,12 +145,12 @@ function querybuilder_select($form, &$form_state) {
             }
             $map_cond_fields[$value] = $fetch_key[1];
             $form['placeholder_cond'][$value] = array(
-              '#type' => 'textfield', 
+              '#type' => 'textfield',
               '#title' => 'Value for ' . $value,
               '#description' => t('Field Type-') . $description,
             );
             $form['placeholder_cond'][$value . "_operator"] = array(
-              '#type' => 'select', 
+              '#type' => 'select',
               '#title' => 'Operator for ' . $value,
               '#options' => $options,
             );
@@ -175,7 +175,7 @@ function querybuilder_select($form, &$form_state) {
     '#suffix' => '</div>',
     '#type' => 'fieldset',
   );
-  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {  
+  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {
     $form['fieldsets']['query_outputs'] = array(
       '#title' => 'Query and Its output',
       '#markup' => querybuilder_select_result($form, $form_state),
@@ -194,7 +194,7 @@ function querybuilder_select_result($form, $form_state) {
   $query_fetch_fields = $form_state['values']['query_fields'];
   $act_query = NULL;
   if (!array_key_exists('_none', $query_table_array)) {
-    $i = 0; 
+    $i = 0;
     // Get table symbol.
     $query_tbl_list = querybuilder_table_key($query_table_array);
     $query_tbl_data = array_flip($query_tbl_list);
@@ -202,7 +202,7 @@ function querybuilder_select_result($form, $form_state) {
       if ($i < 1) {
         $act_query = '$query = db_select(\'' . $value . '\', \'' . $key . '\');';
       }
-      else { 
+      else {
         $lhs = $form_state['values']['placeholder_join']['joingrp_' . $i][$i . '_L'];
         $rhs = $form_state['values']['placeholder_join']['joingrp_' . $i][$i . '_R'];
         $l_tbl_name = explode('.', $lhs);
@@ -228,7 +228,7 @@ function querybuilder_select_result($form, $form_state) {
         else {
           $i = 1;
         }
-        $field_array[$tbl_key][$i] = $split_name[1]; 
+        $field_array[$tbl_key][$i] = $split_name[1];
       }
       foreach ($field_array as $key => $value) {
         $fld_array = 'array(';
@@ -265,7 +265,7 @@ function querybuilder_select_result($form, $form_state) {
           $validate_result = FALSE;
           foreach ($chk_multi_val as $val) {
             // Validate user-input for condition fields.
-            $validate_result = querybuilder_validate_value($value, $val); 
+            $validate_result = querybuilder_validate_value($value, $val);
             if (!$validate_result) {
               break;
             }
@@ -311,8 +311,8 @@ function querybuilder_select_result($form, $form_state) {
         }
         $act_query .= "<br>" . '));';
       }
-    }  
-    $act_query .= "<br>" . '$result = $query->execute();'; 
+    }
+    $act_query .= "<br>" . '$result = $query->execute();';
   }
   else {
     $act_query = 'Insufficient data!';
@@ -320,26 +320,26 @@ function querybuilder_select_result($form, $form_state) {
   $header = array(array('data' => "Query"));
   $rows = array();
   $rows['query'] = array($act_query);
-  $output = theme('table', array('header' => $header, 'rows' => $rows)); 
+  $output = theme('table', array('header' => $header, 'rows' => $rows));
   return $output;
 }
 
 /**
  * Implements querybuilder_table_key
- *   Get table symbol.
+ *   Get requesting tables symbol.
  *
  * @param array $query_table_array
- *   Array of tables name 
+ *   Array of tables name. 
  *
- * @return string
- *   string that table represent.
+ * @return array $tbl_list
+ *   character array that represent tables.
  */
 function querybuilder_table_key($query_table_array = array()) {
   $tbl_list = array();
   if (!empty($query_table_array)) {
     foreach ($query_table_array as $key => $value) {
       $tbl_key = NULL;
-      $tbl_key = substr($key, 0, 1);   
+      $tbl_key = substr($key, 0, 1);  
       if (!array_key_exists($tbl_key, $tbl_list)) {
         $tbl_list[$tbl_key] = $value;
       }
@@ -352,16 +352,16 @@ function querybuilder_table_key($query_table_array = array()) {
           $tbl_key = substr($key, 0, 2);
           if (!array_key_exists($tbl_key, $tbl_list)) {
             $tbl_list[$tbl_key] = $value;
-          } 
+          }
           else {
-           $tbl_key = substr($key, 0, 3);
-           if (!array_key_exists($tbl_key, $tbl_list)) {
+            $tbl_key = substr($key, 0, 3);
+            if (!array_key_exists($tbl_key, $tbl_list)) {
               $tbl_list[$tbl_key] = $value;
-           }
-           else { 
-            $tbl_list[$key] = $value;
-           }
-          } 
+            }
+            else {
+              $tbl_list[$key] = $value;
+            }
+          }
         }
       }
     }

@@ -91,11 +91,11 @@ function querybuilder_validate_value($data_type, $field_value) {
       break;
 
     case 'int':
-      if (!is_numeric($field_value)) {      
+      if (!is_numeric($field_value)) {
         $result = FALSE;
       }
       else {
-         $result = TRUE;
+        $result = TRUE;
       }
       break;
 
@@ -104,7 +104,7 @@ function querybuilder_validate_value($data_type, $field_value) {
         $result = FALSE;
       }
       else {
-         $result = TRUE;
+        $result = TRUE;
       }
       break;
 
@@ -116,7 +116,7 @@ function querybuilder_validate_value($data_type, $field_value) {
         $result = TRUE;
       }
       break;
-      
+
     case 'float':
       if (!is_numeric($field_value)) {
         $result = FALSE;
@@ -248,7 +248,7 @@ function querybuilder_querytable_callback($form, $form_state) {
 /**
  * Implements callback function .
  *
- * @return renderable array 
+ * @return renderable array
  *   The placeholder element.
  */
 function querybuilder_queryfield_callback($form, $form_state) {
