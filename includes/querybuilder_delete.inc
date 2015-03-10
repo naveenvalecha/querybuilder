@@ -46,14 +46,14 @@ function querybuilder_delete($form, &$form_state) {
   }
   $query_fields_list['_none'] = "Select Fields";
   $form['query_table'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Select Table',
     '#options' => $tbl_list,
     '#default_value' => '_none',
     '#ajax' => array(
       'callback' => 'querybuilder_querytable_callback',
-      'wrapper' => 'query-table-fields'
-    )
+      'wrapper' => 'query-table-fields',
+    ),
   );
   $form['query_fields'] = array(
     '#type' => 'select',
@@ -65,8 +65,8 @@ function querybuilder_delete($form, &$form_state) {
     '#suffix' => '</div>',
     '#ajax' => array(
       'callback' => 'querybuilder_queryfield_callback',
-      'wrapper' => 'placeholder-fields'
-    )
+      'wrapper' => 'placeholder-fields',
+    ),
   );
   $form['placeholder'] = array(
     '#type' => 'hidden',

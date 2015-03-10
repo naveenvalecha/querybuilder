@@ -16,8 +16,7 @@ Query Builder is a module which build dynamic query for developers. That module 
 INSTALLATION
 ------------
 
-The Query Builder module is very similar to other Drupal modules. For installation of
-the Query Builder module please follow the below mentioned steps:
+The Query Builder module is very similar to other Drupal modules. For installation of the Query Builder module please follow the below mentioned steps:
 
 • Install as usual
 • Enable the Query Builder module.

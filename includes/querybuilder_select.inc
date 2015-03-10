@@ -38,17 +38,16 @@ function querybuilder_select($form, &$form_state) {
   // Get value from $form_state['values']
   $sel_qry_table = isset($form_state['values']['query_table']) ? $form_state['values']['query_table'] : '_none';
   $sel_cond_fields = isset($form_state['values']['condition_fields']) ? $form_state['values']['condition_fields'] : '_none';
- 
   if ($sel_qry_table != '_none') {
     if (!array_key_exists('_none', $sel_qry_table)) {
       // Get list of field name from table.
       $query_fields = _querybuilder_get_fields($sel_qry_table);
       $query_fields_list = array_combine($query_fields, $query_fields);
-    }  
+    }
   }
   $query_fields_list['_none'] = "Select Fields";
   $form['query_table'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Select Table',
     '#multiple' => 'TRUE',
     '#options' => $tbl_list,
@@ -58,8 +57,8 @@ function querybuilder_select($form, &$form_state) {
       'wrapper' => array('query-table-join',
         'query-table-fields',
         'query-table-fields-condition',
-        ),
-      )
+      ),
+    ),
   );
   $form['placeholder_join'] = array(
     '#type' => 'hidden',
@@ -67,19 +66,17 @@ function querybuilder_select($form, &$form_state) {
     '#suffix' => '</div>',
     '#tree' => TRUE,
   );
-  
   if (!empty($sel_qry_table) && isset($form_state['values']['query_table'])) {
     $num_table = count($sel_qry_table);
     if ($num_table > 1) {
-       $form['placeholder_join']['#type'] = 'fieldset';
-       $form['placeholder_join']['#title'] = 'Join';
-       for ($limit = 1; $limit < $num_table; $limit++) {
-
+      $form['placeholder_join']['#type'] = 'fieldset';
+      $form['placeholder_join']['#title'] = 'Join';
+      for ($limit = 1; $limit < $num_table; $limit++) {
         $form['placeholder_join']['joingrp_' . $limit] = array(
           '#type' => 'fieldset',
           '#tree' => TRUE,
         );
-         $form['placeholder_join']['joingrp_' . $limit][$limit . "_L"] = array(
+        $form['placeholder_join']['joingrp_' . $limit][$limit . "_L"] = array(
           '#type' => 'select', 
           '#title' => 'Join Fields',
           '#options' => $query_fields_list,

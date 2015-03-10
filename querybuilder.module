@@ -57,7 +57,7 @@ function querybuilder_menu() {
     'title' => 'Update Statement',
     'description' => 'Update query for developer.',
     'weight' => 1,
-    'page callback' => 'drupal_get_form', 
+    'page callback' => 'drupal_get_form',
     'page arguments' => array('querybuilder_update'),
     'access arguments' => array('access upadate query page'),
     'file' => 'includes/querybuilder_update.inc',
@@ -67,7 +67,7 @@ function querybuilder_menu() {
     'title' => 'Insert/Update Statement',
     'description' => 'Merge query for developer.',
     'weight' => 2,
-    'page callback' => 'drupal_get_form', 
+    'page callback' => 'drupal_get_form',
     'page arguments' => array('querybuilder_merge'),
     'access arguments' => array('access merge query page'),
     'file' => 'includes/querybuilder_merge.inc',
@@ -77,7 +77,7 @@ function querybuilder_menu() {
     'title' => 'Delete Statement',
     'description' => 'Delete query for developer.',
     'weight' => 3,
-    'page callback' => 'drupal_get_form', 
+    'page callback' => 'drupal_get_form',
     'page arguments' => array('querybuilder_delete'),
     'access arguments' => array('access delete query page'),
     'file' => 'includes/querybuilder_delete.inc',
@@ -97,7 +97,7 @@ function querybuilder_menu() {
     'title' => 'Select Statement',
     'description' => 'Select query for developer.',
     'weight' => 5,
-    'page callback' => 'drupal_get_form', 
+    'page callback' => 'drupal_get_form',
     'page arguments' => array('querybuilder_select'),
     'access arguments' => array('access select query page'),
     'file' => 'includes/querybuilder_select.inc',
@@ -107,7 +107,7 @@ function querybuilder_menu() {
     'title' => 'Drop Statement',
     'description' => 'Drop query for developer.',
     'weight' => 6,
-    'page callback' => 'drupal_get_form', 
+    'page callback' => 'drupal_get_form',
     'page arguments' => array('querybuilder_drop'),
     'access arguments' => array('access drop query page'),
     'file' => 'includes/querybuilder_drop.inc',
@@ -117,7 +117,7 @@ function querybuilder_menu() {
     'title' => 'Optimise Database',
     'description' => 'Optimise all tables of the database.',
     'weight' => 6,
-    'page callback' => 'drupal_get_form', 
+    'page callback' => 'drupal_get_form',
     'page arguments' => array('querybuilder_optimise'),
     'access arguments' => array('access optimise database page'),
     'file' => 'querybuilder_optimise.inc',
@@ -183,7 +183,7 @@ function querybuilder_permission() {
  * Implements hook_cron().
  */
 function querybuilder_cron() {
-  $clear_cache = variable_get('querybuilder_clear_cache_by_cron'); 
+  $clear_cache = variable_get('querybuilder_clear_cache_by_cron');
   if (!empty($clear_cache)) {
     $msg = t("Cache cleared.");
     drupal_flush_all_caches();

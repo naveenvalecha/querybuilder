@@ -33,7 +33,7 @@ function querybuilder_insert($form, &$form_state) {
     '#ajax' => array(
       'callback' => 'querybuilder_querytable_callback',
       'wrapper' => 'query-table-fields',
-    )
+    ),
   );
   $form['query_fields'] = array(
     '#type' => 'select',
@@ -45,8 +45,8 @@ function querybuilder_insert($form, &$form_state) {
     '#suffix' => '</div>',
     '#ajax' => array(
       'callback' => 'querybuilder_queryfield_callback',
-      'wrapper' => 'placeholder-fields'
-    )
+      'wrapper' => 'placeholder-fields',
+    ),
   );
   $form['placeholder'] = array(
     '#type' => 'hidden',
@@ -98,7 +98,7 @@ function querybuilder_insert($form, &$form_state) {
     '#suffix' => '</div>',
     '#type' => 'fieldset',
   );
-  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) { 
+  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {
     $form['fieldsets']['query_outputs'] = array(
       '#title' => 'Query and Its output',
       '#markup' => querybuilder_insert_result($form, $form_state),

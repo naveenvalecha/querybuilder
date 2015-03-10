@@ -30,12 +30,12 @@ function querybuilder_truncate($form, &$form_state) {
     ),
   );
   $form['fieldsets'] = array(
-   '#title' => t("Output"),
-   '#prefix' => '<div id="textfields">',
-   '#suffix' => '</div>',
-   '#type' => 'fieldset',
+    '#title' => t("Output"),
+    '#prefix' => '<div id="textfields">',
+    '#suffix' => '</div>',
+    '#type' => 'fieldset',
   );
-  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) { 
+  if (!empty($form_state['values']['build_query']) && $form_state['values']['build_query']) {
     $form['fieldsets']['query_outputs'] = array(
       '#title' => 'Query and Its output',
       '#markup' => querybuilder_truncate_result($form, $form_state),
@@ -67,6 +67,6 @@ function querybuilder_truncate_result($form, $form_state) {
   $header = array(array('data' => "Query"));
   $rows = array();
   $rows['query'] = array($act_query);
-  $output = theme('table', array('header' => $header, 'rows' => $rows)); 
+  $output = theme('table', array('header' => $header, 'rows' => $rows));
   return $output;
 }
