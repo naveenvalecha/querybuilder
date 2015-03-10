@@ -12,7 +12,8 @@ module_load_include('inc', 'querybuilder', 'includes/querybuilder_common');
  * Form builder; Return form for update.
  */
 function querybuilder_update($form, &$form_state) {
-  $options_char = array('eq' => 'Is equal to',
+  $options_char = array(
+    'eq' => 'Is equal to',
     'neq' => 'Is not equal to',
     'sw' => 'Start with',
     'nsw' => 'Does not start with',
@@ -21,7 +22,8 @@ function querybuilder_update($form, &$form_state) {
     'em' => 'Is Empty',
     'nem' => 'Not Empty',
   );
-  $options_num = array('eq' => 'equal to',
+  $options_num = array(
+    'eq' => 'equal to',
     'neq' => 'Is not equal to',
     'lt' => 'Less than',
     'elt' => 'Less than or equal to',
@@ -42,7 +44,7 @@ function querybuilder_update($form, &$form_state) {
     // Get list of field name from table.
     $query_fields = _querybuilder_get_fields($sel_qry_table);
     $query_fields_list = array_combine($query_fields, $query_fields);
-  }  
+  }
   $query_fields_list['_none'] = "Select Fields";
   $form['query_table'] = array(
     '#type' => 'select', 
@@ -51,10 +53,11 @@ function querybuilder_update($form, &$form_state) {
     '#default_value' => '_none',
     '#ajax' => array(
       'callback' => 'querybuilder_querytable_callback',
-      'wrapper' => array('query-table-fields',
+      'wrapper' => array(
+        'query-table-fields',
         'query-table-fields-condition',
-        ),
-      )
+      ),
+    ),
   );
   $form['query_fields'] = array(
     '#type' => 'select', 
@@ -67,7 +70,7 @@ function querybuilder_update($form, &$form_state) {
     '#ajax' => array(
       'callback' => 'querybuilder_queryfield_callback',
       'wrapper' => 'placeholder-fields',
-      )
+    ),
   );
   $form['placeholder'] = array(
     '#type' => 'hidden',
@@ -114,7 +117,7 @@ function querybuilder_update($form, &$form_state) {
     '#ajax' => array(
       'callback' => 'querybuilder_condfield_callback',
       'wrapper' => 'placeholder-fields-condition',
-      )
+    ),
   ); 
   $form['placeholder_cond'] = array(
     '#type' => 'hidden',
@@ -150,12 +153,12 @@ function querybuilder_update($form, &$form_state) {
             }
             $map_cond_fields[$value] = $fetch_key[1];
             $form['placeholder_cond'][$value] = array(
-              '#type' => 'textfield', 
+              '#type' => 'textfield',
               '#title' => 'Value for ' . $value,
               '#description' => t('Field Type-') . $description,
             );
             $form['placeholder_cond'][$value . "_operator"] = array(
-              '#type' => 'select', 
+              '#type' => 'select',
               '#title' => 'Operator for ' . $value,
               '#options' => $options,
             );
@@ -244,7 +247,7 @@ function querybuilder_update_result($form, $form_state) {
       $act_query .= "<br>" . '$query = db_update(\'' . $query_table . '\')' . "<br>";
       $act_query .= '->fields(array(';
       foreach ($map_fields_data as $key => $value) {
-        $act_query .= "<br>" . '\'' . $key . '\' => ' . '\'' . $value . '\',';
+        $act_query .= "<br>" . '\'' . $key . '\' => \'' . $value . '\',';
       }
       $act_query .= "<br>" . '))' . "<br>";
       $act_query .= '->condition(array(';
@@ -292,6 +295,6 @@ function querybuilder_update_result($form, $form_state) {
   $header = array(array('data' => "Query"));
   $rows = array();
   $rows['query'] = array($act_query);
-  $output = theme('table', array('header' => $header, 'rows' => $rows)); 
+  $output = theme('table', array('header' => $header, 'rows' => $rows));
   return $output;
 }

@@ -158,7 +158,7 @@ function querybuilder_merge($form, &$form_state) {
   $map_cond_fields = array();
   if (!empty($sel_key_fields) && isset($form_state['values']['query_fields_key'])) {
     if (!array_key_exists('_none', $sel_key_fields)) {
-      $form['placeholder_cond']['#type'] = 'fieldset'; 
+      $form['placeholder_cond']['#type'] = 'fieldset';
       foreach ($query_fields as $key => $value) {
         $fetch_key = array();
         $fetch_key = explode('%', $key);
