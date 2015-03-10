@@ -47,7 +47,7 @@ function querybuilder_update($form, &$form_state) {
   }
   $query_fields_list['_none'] = "Select Fields";
   $form['query_table'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Select Table',
     '#options' => $tbl_list,
     '#default_value' => '_none',
@@ -60,9 +60,9 @@ function querybuilder_update($form, &$form_state) {
     ),
   );
   $form['query_fields'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Set Fields',
-    '#multiple' => TRUE, 
+    '#multiple' => TRUE,
     '#default_value' => '_none',
     '#options' => $query_fields_list,
     '#prefix' => '<div id="query-table-fields">',
@@ -88,7 +88,7 @@ function querybuilder_update($form, &$form_state) {
           $fetch_key = explode('%', $key);
           if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
             $form['placeholder'][$value] = array(
-              '#type' => 'textfield', 
+              '#type' => 'textfield',
               '#title' => 'Value for ' . $value,
               '#attributes' => array('disabled' => TRUE),
               '#description' => t('Field Type-') . $fetch_key[1],
@@ -97,7 +97,7 @@ function querybuilder_update($form, &$form_state) {
           else {
             $map_fields[$value] = $fetch_key[1];
             $form['placeholder'][$value] = array(
-              '#type' => 'textfield', 
+              '#type' => 'textfield',
               '#title' => 'Value for ' . $value,
               '#description' => t('Field Type-') . $fetch_key[1],
             );
@@ -108,9 +108,9 @@ function querybuilder_update($form, &$form_state) {
     }
   }
   $form['condition_fields'] = array(
-    '#type' => 'select', 
+    '#type' => 'select',
     '#title' => 'Condition Fields',
-    '#multiple' => TRUE, 
+    '#multiple' => TRUE,
     '#options' => $query_fields_list,
     '#prefix' => '<div id="query-table-fields-condition">',
     '#suffix' => '</div>',
@@ -118,7 +118,7 @@ function querybuilder_update($form, &$form_state) {
       'callback' => 'querybuilder_condfield_callback',
       'wrapper' => 'placeholder-fields-condition',
     ),
-  ); 
+  );
   $form['placeholder_cond'] = array(
     '#type' => 'hidden',
     '#prefix' => '<div id="placeholder-fields-condition">',
@@ -126,7 +126,7 @@ function querybuilder_update($form, &$form_state) {
     '#tree' => TRUE,
   );
   $map_cond_fields = array();
-  if (!empty($sel_cond_fields) && isset($form_state['values']['condition_fields'])) {  
+  if (!empty($sel_cond_fields) && isset($form_state['values']['condition_fields'])) {
     if (!array_key_exists('_none', $sel_cond_fields)) {
       $form['placeholder_cond']['#type'] = 'fieldset';
       foreach ($query_fields as $key => $value) {
@@ -135,7 +135,7 @@ function querybuilder_update($form, &$form_state) {
           $fetch_key = explode('%', $key);
           if ($fetch_key[1] == "blob" || $fetch_key[1] == "longblob" || $fetch_key[1] == "mediumblob") {
             $form['placeholder_cond'][$value] = array(
-              '#type' => 'textfield', 
+              '#type' => 'textfield',
               '#title' => 'Value for ' . $value,
               '#attributes' => array('disabled' => TRUE),
               '#description' => t('Field Type-') . $fetch_key[1],
@@ -169,8 +169,8 @@ function querybuilder_update($form, &$form_state) {
     }
   }
   $form['build_query'] = array(
-   '#type' => 'checkbox',
-   '#title' => t('Build Query'),
+    '#type' => 'checkbox',
+    '#title' => t('Build Query'),
     '#ajax' => array(
       'callback' => 'querybuilder_buildquery_callback',
       'wrapper' => 'textfields',
@@ -198,8 +198,8 @@ function querybuilder_update($form, &$form_state) {
  * Process result from query builder update form.
  */
 function querybuilder_update_result($form, $form_state) {
-  $query_table = $form_state['values']['query_table'];  
-  $act_query = NULL; 
+  $query_table = $form_state['values']['query_table'];
+  $act_query = NULL;
   if (isset($form_state['fields']) && !empty($form_state['fields'])) {
     $query_fields = $form_state['fields'];
     foreach ($query_fields as $key => $value) {
@@ -207,7 +207,7 @@ function querybuilder_update_result($form, $form_state) {
         $field_value = check_plain($form_state['values']['placeholder'][$key]);
         $validate_result = FALSE;
         // Validate user-input.
-        $validate_result = querybuilder_validate_value($value, $field_value); 
+        $validate_result = querybuilder_validate_value($value, $field_value);
         if ($validate_result) {
           $map_fields_data[$key] = $field_value;
         }
@@ -222,7 +222,7 @@ function querybuilder_update_result($form, $form_state) {
           $cond_field_value = check_plain($form_state['values']['placeholder_cond'][$key]);
           $chk_multi_val = array();
           $chk_multi_val = explode('|', $cond_field_value);
-          foreach ($chk_multi_val as $val) { 
+          foreach ($chk_multi_val as $val) {
             // Validate user-input for condition fields.
             $validate_result = querybuilder_validate_value($value, $val);
             if (!$validate_result) {
@@ -237,7 +237,7 @@ function querybuilder_update_result($form, $form_state) {
           if ($validate_result && !empty($cond_field_value)) {
             $cond_map_fields_data[$key] = $cond_field_value;
             $cond_map_fields_operator[$key] = $cond_act_oper;
-          } 
+          }
         }
       }
     }
@@ -278,7 +278,7 @@ function querybuilder_update_result($form, $form_state) {
           $act_query .= "<br>" . '\'' . $key . '\', ' . $value . ', ' . '\'' . $cond_map_fields_operator[$key] . '\',';
         }
       }
-      $act_query .= "<br>" . '))->execute();'; 
+      $act_query .= "<br>" . '))->execute();';
       $act_query .= "<br>" . '}';
       $act_query .= "<br>" . 'catch (Exception $e) {';
       $act_query .= "<br>" . '$transaction->rollback();';

@@ -12,12 +12,12 @@
  */
 function querybuilder_get_tables() {
   // Fetch list of table name.
-  $schema = drupal_get_schema(NULL, TRUE); 
+  $schema = drupal_get_schema(NULL, TRUE);
   // Sort ascending.
   ksort($schema);
   foreach ($schema as $table => $value) {
     $tables_list[$table] = $table;
-  }  
+  }
   $tables_list['_none'] = "Select table";
   return $tables_list;
 }
@@ -34,26 +34,26 @@ function querybuilder_get_tables() {
 function _querybuilder_get_fields($tables) {
   // Fetch list of column names from table(s).
   if (!is_array($tables) && !empty($tables) && ($tables != '_none')) {
-    $schema = drupal_get_schema($tables, TRUE); 
+    $schema = drupal_get_schema($tables, TRUE);
     foreach ($schema['fields'] as $key => $value) {
-      $type = $value['type']; 
+      $type = $value['type'];
       $field_list[$key . "%" . $type] = $key;
-    } 
+    }
     return $field_list;
   }
   else {
-    if (($tables != '_none') && (is_array($tables))) { 
+    if (($tables != '_none') && (is_array($tables))) {
       if (!array_key_exists('_none', $tables)) {
-        foreach ($tables as $value) { 
-          $schema = drupal_get_schema($value, TRUE); 
+        foreach ($tables as $value) {
+          $schema = drupal_get_schema($value, TRUE);
           foreach ($schema['fields'] as $key => $val) {
-            $type = $val['type']; 
+            $type = $val['type'];
             $field_list[$value . "." . $key . "%" . $type] = $value . "." . $key;
           }
         }
       }
       return $field_list;
-    } 
+    }
   }
 }
 
@@ -62,13 +62,11 @@ function _querybuilder_get_fields($tables) {
  *
  * @param string $data_type
  *   Data type name.
- * @param int $length
- *   Length of data type.
  * @param string $field_value
  *   Value of data type.
  *
- * @return boolean 
- *   Returns TRUE/FALSE.
+ * @return boolean
+ *   Returns TRUE|FALSE.
  */
 function querybuilder_validate_value($data_type, $field_value) {
   if (empty($field_value)) {
@@ -81,15 +79,15 @@ function querybuilder_validate_value($data_type, $field_value) {
       break;
     case 'longtext':
       $result = TRUE;
-    break;
+      break;
     case 'mediumtext':
       $result = TRUE;
-    break;
+      break;
     case 'text':
       $result = TRUE;
-    break;
+      break;
     case 'int':
-      if (!is_numeric($field_value)) {       
+      if (!is_numeric($field_value)) {      
         $result = FALSE;
       }
       else {
@@ -97,7 +95,7 @@ function querybuilder_validate_value($data_type, $field_value) {
       }
       break;
     case 'tinyint':
-       if (!is_numeric($field_value)) {       
+      if (!is_numeric($field_value)) {
         $result = FALSE;
       }
       else {
@@ -105,19 +103,19 @@ function querybuilder_validate_value($data_type, $field_value) {
       }
       break;
     case 'serial':
-       if (!is_numeric($field_value)) {       
+      if (!is_numeric($field_value)) {
         $result = FALSE;
       }
       else {
-         $result = TRUE;
+        $result = TRUE;
       }
       break;
     case 'float':
-      if (!is_numeric($field_value)) {       
+      if (!is_numeric($field_value)) {
         $result = FALSE;
       }
       else {
-         $result = TRUE;
+        $result = TRUE;
       }
       break;
   }
@@ -130,7 +128,7 @@ function querybuilder_validate_value($data_type, $field_value) {
  * @param string $operator
  *   Operator name.
  *
- * @return string $sign 
+ * @return string $sign
  *   Returns operator symbol.
  */
 function querybuilder_actual_operator($operator) {
@@ -138,45 +136,59 @@ function querybuilder_actual_operator($operator) {
     case 'eq':
       $sign = '=';
       break;
+
     case 'neq':
       $sign = '<>';
       break;
+
     case 'sw':
       $sign = 'S_LIKE';
       break;
+
     case 'nsw':
       $sign = 'NOT S_LIKE';
       break;
+
     case 'ew':
       $sign = 'LIKE_E';
       break;
+
     case 'new':
       $sign = 'NOT LIKE_E';
       break;
+
     case 'gt':
       $sign = '>';
       break;
+
     case 'lt':
       $sign = '<';
       break;
+
     case 'elt':
       $sign = '<=';
       break;
+
     case 'egt':
       $sign = '>=';
       break;
+
     case 'in':
       $sign = 'IN';
       break;
+
     case 'nin':
       $sign = 'NOT IN';
       break;
+
     case 'em':
       $sign = 'isNull';
       break; 
+
     case 'nem':
       $sign = 'isNotNull';
       break; 
+
     default:
       $sign = '=';
       break;
@@ -238,7 +250,8 @@ function querybuilder_queryfield_callback($form, $form_state) {
 /**
  * Implements callback function .
  *
- * @return renderable array (the placeholder_update element)
+ * @return renderable array
+ *   The placeholder_update element.
  */
 function querybuilder_queryfield_update_callback($form, $form_state) {
   return $form['placeholder_update'];
@@ -247,7 +260,8 @@ function querybuilder_queryfield_update_callback($form, $form_state) {
 /**
  * Implements callback function .
  *
- * @return renderable array (the placeholder_cond element)
+ * @return renderable array
+ *   The placeholder_cond element.
  */
 function querybuilder_condfield_callback($form, $form_state) {
   return $form['placeholder_cond'];
@@ -256,7 +270,8 @@ function querybuilder_condfield_callback($form, $form_state) {
 /**
  * Implements callback function .
  *
- * @return renderable array (the fieldsets element)
+ * @return renderable array
+ *   The fieldsets element.
  */
 function querybuilder_buildquery_callback($form, $form_state) {
   return $form['fieldsets'];
