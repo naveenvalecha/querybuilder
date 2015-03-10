@@ -325,21 +325,20 @@ function querybuilder_select_result($form, $form_state) {
 }
 
 /**
- * Implements querybuilder_table_key
- *   Get requesting tables symbol.
+ * Implements function for table symbol.
  *
  * @param array $query_table_array
- *   Array of tables name. 
+ *   Array of tables name.
  *
  * @return array $tbl_list
- *   character array that represent tables.
+ *   Character array that represent tables.
  */
 function querybuilder_table_key($query_table_array = array()) {
   $tbl_list = array();
   if (!empty($query_table_array)) {
     foreach ($query_table_array as $key => $value) {
       $tbl_key = NULL;
-      $tbl_key = substr($key, 0, 1);  
+      $tbl_key = substr($key, 0, 1);
       if (!array_key_exists($tbl_key, $tbl_list)) {
         $tbl_list[$tbl_key] = $value;
       }
