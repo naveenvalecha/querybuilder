@@ -185,8 +185,7 @@ function querybuilder_permission() {
 function querybuilder_cron() {
   $clear_cache = variable_get('querybuilder_clear_cache_by_cron', FALSE);
   if (!empty($clear_cache)) {
-    $msg = t("Cache cleared.");
     drupal_flush_all_caches();
-    drupal_set_message(check_plain($msg));
+    drupal_set_message(t('Cache cleared.'));
   }
 }
