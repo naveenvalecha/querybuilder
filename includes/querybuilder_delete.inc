@@ -177,36 +177,49 @@ function querybuilder_delete_result($form, $form_state) {
     }
   }
   if (isset($map_fields_data) && !empty($map_fields_data)) {
-    $act_query = '$query = db_delete(\'' . $query_table . '\')' . "<br>";
-    $act_query .= '->condition(array(';
+    $act_query = "<br>" . '$transaction = db_transaction();';
+    $act_query .= "<br>" . 'try {' . "<br>";
+		$act_query .= '$query = db_delete(\'' . $query_table . '\')';
     foreach ($map_fields_data as $key => $value) {
       if ($map_fields_operator[$key] == "LIKE_E") {
-        $act_query .= "<br>" . '\'' . $key . '\', \'' . $value . '% \', \'LIKE\',';
+         $act_query .= "<br>";
+				 $act_query .= '->condition(\'' . $key  . '\', \'' . $value . '% \', \'LIKE\')';
       }
       elseif ($map_fields_operator[$key] == "S_LIKE") {
-        $act_query .= "<br>" . '\'' . $key . '\', \'%' . $value . '\', \'LIKE\',';
+        $act_query .= "<br>";
+				$act_query .= '->condition(\'' . $key . '\', \'%' . $value . '\', \'LIKE\')';
       }
       elseif ($map_fields_operator[$key] == "NOT S_LIKE") {
-        $act_query .= "<br>" . '\'' . $key . '\', \'%' . $value . '\', \'NOT LIKE\',';
+        $act_query .= "<br>";
+				$act_query .= '->condition(\'' . $key . '\', \'%' . $value . '\', \'NOT LIKE\')';
       }
       elseif ($map_fields_operator[$key] == "NOT LIKE_E") {
-        $act_query .= "<br>" . '\'' . $key . '\', \'' . $value . '% \', \'NOT LIKE\',';
+        $act_query .= "<br>";
+				$act_query .= '->condition(\'' . $key . '\', \'' . $value . '% \', \'NOT LIKE\')';
       }
       elseif ($map_fields_operator[$key] == "IN") {
         $tem_val = NULL;
         $tem_val = str_replace('|', ',', $value);
-        $act_query .= "<br>" . '\'' . $key . '\', array(' . $tem_val . '), \'IN\',';
+        $act_query .= "<br>";
+				$act_query .= '->condition(\'' . $key . '\', array(' . $tem_val . '), \'IN\')';
       }
       elseif ($map_fields_operator[$key] == "NOT IN") {
         $tem_val = NULL;
         $tem_val = str_replace('|', ',', $value);
-        $act_query .= "<br>" . '\'' . $key . '\', array(' . $tem_val . '), \'NOT IN\',';
+        $act_query .= "<br>";
+				$act_query .= '->condition(\'' . $key . '\', array(' . $tem_val . '), \'NOT IN\')';
       }
       else {
-        $act_query .= "<br>" . '\'' . $key . '\', ' . $value . ', ' . '\'' . $map_fields_operator[$key] . '\',';
+        $act_query .= "<br>";
+				$act_query .= '->condition(\'' . $key . '\', \'' . $value . '\', ' . '\'' . $map_fields_operator[$key] . '\')';
       }
     }
-    $act_query .= "<br>" . '))->execute();';
+    $act_query .= "<br>" . '->execute();';
+		$act_query .= "<br>" . '}';
+    $act_query .= "<br>" . 'catch (Exception $e) {';
+    $act_query .= "<br>" . '$transaction->rollback();';
+    $act_query .= "<br>" . 'watchdog_exception(\'Query_Issue\', $e);';
+    $act_query .= "<br>" . '}';
   }
   else {
     $act_query = 'Insufficient data!';

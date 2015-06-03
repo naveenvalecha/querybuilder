@@ -130,6 +130,7 @@ function querybuilder_insert_result($form, $form_state) {
       }
     }
     if (!empty($map_fields_data)) {
+		  $act_query .= "<br>" . '$transaction = db_transaction();';
       $act_query .= "<br>" . 'try {';
       $act_query .= "<br>" . '$query = db_insert(\'' . $query_table . '\')' . "<br>";
       $act_query .= '->fields(array(';

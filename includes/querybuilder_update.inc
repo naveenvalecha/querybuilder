@@ -249,36 +249,42 @@ function querybuilder_update_result($form, $form_state) {
       foreach ($map_fields_data as $key => $value) {
         $act_query .= "<br>" . '\'' . $key . '\' => \'' . $value . '\',';
       }
-      $act_query .= "<br>" . '))' . "<br>";
-      $act_query .= '->condition(array(';
+      $act_query .= "<br>" . '))';
       foreach ($cond_map_fields_data as $key => $value) {
         if ($cond_map_fields_operator[$key] == "LIKE_E") {
-          $act_query .= "<br>" . '\'' . $key . '\', \'' . $value . '% \', \'LIKE\',';
+          $act_query .= "<br>";
+				  $act_query .= '->condition(\'' . $key  . '\', \'' . $value . '% \', \'LIKE\')';
         }
         elseif ($cond_map_fields_operator[$key] == "S_LIKE") {
-          $act_query .= "<br>" . '\'' . $key . '\', \'%' . $value . '\', \'LIKE\',';
+				  $act_query .= "<br>";
+				  $act_query .= '->condition(\'' . $key . '\', \'%' . $value . '\', \'LIKE\')';
         }
         elseif ($cond_map_fields_operator[$key] == "NOT S_LIKE") {
-          $act_query .= "<br>" . '\'' . $key . '\', \'%' . $value . '\', \'NOT LIKE\',';
+          $act_query .= "<br>";
+				  $act_query .= '->condition(\'' . $key . '\', \'%' . $value . '\', \'NOT LIKE\')';
         }
         elseif ($cond_map_fields_operator[$key] == "NOT LIKE_E") {
-          $act_query .= "<br>" . '\'' . $key . '\', \'' . $value . '% \', \'NOT LIKE\',';
+          $act_query .= "<br>";
+				  $act_query .= '->condition(\'' . $key . '\', \'' . $value . '% \', \'NOT LIKE\')';
         }
         elseif ($cond_map_fields_operator[$key] == "IN") {
           $tem_val = NULL;
           $tem_val = str_replace('|', ',', $value);
-          $act_query .= "<br>" . '\'' . $key . '\', array(' . $tem_val . '), \'IN\',';
+          $act_query .= "<br>";
+				  $act_query .= '->condition(\'' . $key . '\', array(' . $tem_val . '), \'IN\')';
         }
         elseif ($cond_map_fields_operator[$key] == "NOT IN") {
           $tem_val = NULL;
           $tem_val = str_replace('|', ',', $value);
-          $act_query .= "<br>" . '\'' . $key . '\', array(' . $tem_val . '), \'NOT IN\',';
+          $act_query .= "<br>";
+				  $act_query .= '->condition(\'' . $key . '\', array(' . $tem_val . '), \'NOT IN\')';
         }
         else {
-          $act_query .= "<br>" . '\'' . $key . '\', ' . $value . ', ' . '\'' . $cond_map_fields_operator[$key] . '\',';
+				  $act_query .= "<br>";
+				  $act_query .= '->condition(\'' . $key . '\', \'' . $value . '\', ' . '\'' . $cond_map_fields_operator[$key] . '\')';
         }
       }
-      $act_query .= "<br>" . '))->execute();';
+      $act_query .= "<br>" . '->execute();';
       $act_query .= "<br>" . '}';
       $act_query .= "<br>" . 'catch (Exception $e) {';
       $act_query .= "<br>" . '$transaction->rollback();';
