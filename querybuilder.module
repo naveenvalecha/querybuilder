@@ -8,9 +8,9 @@
 /**
  * Implements hook_help().
  */
-function querybuilder_help($path, $arg) {
-  switch ($path) {
-    case 'admin/help#querybuilder':
+function querybuilder_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.querybuilder':
       $output  = '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('QueryBuilder is a module which build the dynamic query for developer especially which are new in drupal. This module helps the drupal developer for building dyamic query by follow drupal syntax. This will reduce the amount of time at the time of building query.') . '</p>';
       return $output;
