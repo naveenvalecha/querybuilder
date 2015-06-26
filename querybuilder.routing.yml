@@ -5,6 +5,13 @@ querybuilder.overview:
     _title: 'Query Builder'
   requirements:
     _permission: 'administer querybuilder configuration'
+querybuilder.dynamic:
+  path: '/admin/config/querybuilder/dynamic'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Dyamic queries'
+  requirements:
+    _permission: 'administer querybuilder configuration'
 querybuilder.optimisedatabase:
   path: '/admin/config/querybuilder/database'
   defaults:
