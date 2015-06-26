@@ -12,7 +12,7 @@ function querybuilder_optimise($form, &$form_state) {
   $form['querybuilder_clear_cache_by_cron'] = array(
     '#type' => 'checkbox',
     '#title' => t('Optimise database'),
-    '#default_value' => variable_get('querybuilder_clear_cache_by_cron', FALSE),
+    '#default_value' => \Drupal::config('querybuilder.settings')->get('clear_cache_by_cron'),
     '#description' => t('When checked, clear cache every time when cron run.'),
   );
   return system_settings_form($form);
