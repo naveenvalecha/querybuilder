@@ -1,1 +1,1 @@
-clear_cache_by_cron: false
+clear_cache_by_cron: 0

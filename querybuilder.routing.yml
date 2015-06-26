@@ -1,0 +1,6 @@
+querybuilder.optimisedatabase:
+  path: '/admin/config/querybuilder/database'
+  defaults:
+    _form: '\Drupal\querybuilder\Form\OptimiseDatabaseForm'
+  requirements:
+    _permission: 'access optimise database page'
