@@ -183,7 +183,7 @@ function querybuilder_permission() {
  * Implements hook_cron().
  */
 function querybuilder_cron() {
-  $clear_cache = variable_get('querybuilder_clear_cache_by_cron', FALSE);
+  $clear_cache = \Drupal::config('querybuilder.settings')->get('clear_cache_by_cron');
   if (!empty($clear_cache)) {
     drupal_flush_all_caches();
     drupal_set_message(t('Cache cleared.'));
