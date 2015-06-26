@@ -39,4 +39,4 @@ MAINTAINERS
 
 Current Maintainers:
 
-• Rahul Seth          - https://www.drupal.org/user/2694359
+• Rahul Seth              - https://www.drupal.org/u/rahul-seth
